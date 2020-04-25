@@ -11,6 +11,9 @@ class pagina:
     def setTitolo(self, titolo):
         self.titolo = titolo
 
+    def setInfobox(self, infobox):
+        self.infobox = infobox
+
     def setContenuto(self, contenuto):
         self.contenuto = self.contenuto + "\n" + contenuto
 
@@ -24,10 +27,9 @@ class pagina:
         return self.titolo
     
     def extractInformation(self):
-        text = self.getContenuto().split('\n')
-        self._extractInfobox(text)
-        # self._extractCategory(text)
-        # self._extractContent(text)
+        self._extractInfobox(self.getContenuto().split('\n'))
+        self._extractCategory(self.getContenuto().split('\n'))
+        # self._extractContent(self.getContenuto().split('\n'))
 
     def _extractInfobox(self, text):
         count = 1
@@ -52,8 +54,8 @@ class pagina:
                     break
                 tempInfoBox += "\n" + text[i]
             i += 1
-        print(tempInfoBox)
-        input()
+        self.setInfobox(tempInfoBox)
+        self.contenuto = '\n'.join(text[:indexStart]) + '\n' + '\n'.join(text[(indexEnd+1):])
 
     def _extractCategory(self, text):
         for line in text:
@@ -104,4 +106,4 @@ def getParsedPage():
 
 if __name__ == '__main__':
     pagine = getParsedPage()
-    print(pagine[2].extractInformation())
+    pagine[2].extractInformation()
