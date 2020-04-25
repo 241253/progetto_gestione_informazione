@@ -55,7 +55,7 @@ with ix.searcher() as s:
     resultsTitle = s.search(rt, limit=None)
     print('TITOLO')
     for r in resultsTitle:
-        print(r)
+        print(r['title'])
     print('\n\nCONTENUTO')
     for r in resultsContent:
-        print(r)
+        print(r['title'])
