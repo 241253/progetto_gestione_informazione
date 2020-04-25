@@ -6,7 +6,7 @@ class pagina:
         self.titolo = ''
         self.infobox = ''
         self.contenuto = ''
-        self.categoria = ''
+        self.categoria = list()
 
     def setTitolo(self, titolo):
         self.titolo = titolo
@@ -58,8 +58,22 @@ class pagina:
         self.contenuto = '\n'.join(text[:indexStart]) + '\n' + '\n'.join(text[(indexEnd+1):])
 
     def _extractCategory(self, text):
+        trovato = False
+        for line in reversed(text):
+            if line[:11] == '[[Category:':
+                self.categoria.append(line[11:-2])
+                trovato = True
+            elif(trovato):
+                break
+
+        tempText = ''
         for line in text:
-            pass
+            if line.__contains__('== References ==') or line.__contains__('== External links ==') or line[:11] == '[[Category:':
+                break
+            else:
+                tempText += line + '\n'
+        self.contenuto = tempText
+
 
     def _extractContent(self, text):
         for line in text:
