@@ -6,47 +6,56 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import scrolledtext
 
-#APERTURA INDICE
+# APERTURA INDICE
 ix = index.open_dir("indexdir")
+search_type = 'title'
 
 # GUI
 # Creazione finestra
 window = Tk()
 window.title("Il TOP SEARCHER di J e Z")
+window.resizable(False, False)
+
+# Creazione label verifica tipo di ricerca
+lbl = Label(window, text='Ricerca per titolo:')
+lbl.grid(columnspan=2, row=0)
 
 # Creazione casella di testo
-txt = Entry(window,width=100)
-txt.grid(column=0, row=0)
+txt = Entry(window, width=125)
+txt.grid(column=0, row=1)
 
 # Creazione bottone di ricerca
-btn = Button(window, text="Cerca")
-btn.grid(column=1, row=0)
+def search_clicked():
+    scrollview.delete('1.0', END)
+    q = QueryParser(search_type, schema=ix.schema)  # QUERY SUL CONTENUTO
+    r = q.parse(txt.get())
+    with ix.searcher() as s:
+        results = s.search(r, limit=30)
+        temp_text = ''
+        for r in results:
+            scrollview.insert(END, r['title']+'\n')
+search_btn = Button(window, text="Cerca", command=search_clicked)
+search_btn.grid(column=1, row=1)
+
 
 # Creazione bottoni di selezione di tipo ricerca
-btn = Button(window, text="Per titolo")
-btn.grid(column=0, row=1)
-btn = Button(window, text="Per contenuto")
-btn.grid(column=0, row=2)
+def title_clicked():
+    search_type = 'title'
+    lbl.configure(text="Ricerca per titolo:")
+title_btn = Button(window, text="Ricerca per titolo", command=title_clicked)
+title_btn.grid(column=0, row=2)
+
+def content_clicked():
+    search_type = 'content'
+    lbl.configure(text="Ricerca per contenuto:")
+content_btn = Button(window, text="Ricerca per contenuto", command=content_clicked)
+content_btn.grid(column=0, row=3)
 
 # Scrollview per visualizzare il risultato della ricerca
-scrollview = scrolledtext.ScrolledText(window,width=100,height=10)
-scrollview.grid(columnspan=2, row=3, sticky="nesw")
+scrollview = scrolledtext.ScrolledText(window, width=100, height=10)
+scrollview.grid(columnspan=2, row=4, sticky="nesw")
 
 # Loop finestra (mantiene la finestra aperta)
 window.mainloop()
 
-#CREO LA QUERY
-qc = QueryParser('content', schema=ix.schema) #QUERY SUL CONTENUTO
-qt = QueryParser('title', schema=ix.schema) #QUERY SUL TITOLO
-rc = qc.parse(u'Miller')
-rt = qt.parse(u'world')
 
-with ix.searcher() as s:
-    resultsContent = s.search(rc, limit=None)
-    resultsTitle = s.search(rt, limit=None)
-    print('TITOLO')
-    for r in resultsTitle:
-        print(r['title'])
-    print('\n\nCONTENUTO')
-    for r in resultsContent:
-        print(r['title'])
