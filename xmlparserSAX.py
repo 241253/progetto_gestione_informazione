@@ -27,8 +27,11 @@ class pagina:
         return self.titolo
     
     def extractInformation(self):
+        #estrae infobox
         self._extractInfobox(self.getContenuto().split('\n'))
+        #estrae categorie
         self._extractCategory(self.getContenuto().split('\n'))
+        #Potrebbe servire in futuro per elaboreare il contenuto che è rimasto
         # self._extractContent(self.getContenuto().split('\n'))
 
     def _extractInfobox(self, text):
@@ -73,11 +76,6 @@ class pagina:
             else:
                 tempText += line + '\n'
         self.contenuto = tempText
-
-
-    def _extractContent(self, text):
-        for line in text:
-            pass
 
     def __str__(self):
         return f'URL: {self.url.encode("utf-8")}\nTitolo:{self.titolo.encode("utf-8")}\nContenuto:{self.contenuto.encode("utf-8")}\n\n\n'
