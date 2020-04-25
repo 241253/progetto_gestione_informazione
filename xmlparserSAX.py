@@ -12,7 +12,7 @@ class pagina:
         self.titolo = titolo
 
     def setContenuto(self, contenuto):
-        self.contenuto = self.contenuto + contenuto
+        self.contenuto = self.contenuto + "\n" + contenuto
 
     def getURL(self):
         return 'https://en.wikipedia.org/wiki/' + self.getTitolo()
@@ -24,14 +24,36 @@ class pagina:
         return self.titolo
     
     def extractInformation(self):
-        # text = self.getContenuto().split('\n')
-        self._extractInfobox()
+        text = self.getContenuto().split('\n')
+        self._extractInfobox(text)
         # self._extractCategory(text)
         # self._extractContent(text)
 
-    def _extractInfobox(self):
-        print(self.contenuto.split('\n'))
+    def _extractInfobox(self, text):
+        count = 1
+        i = 0
+        trovato = False
+        tempInfoBox = ""
+        indexStart = -1
+        indexEnd = -1
 
+        while i < len(text):
+            if(text[i].__contains__("{{Infobox")):
+                tempInfoBox += text[i][10:]
+                indexStart = i
+                trovato = True
+            if(i != indexStart and trovato):
+                if(text[i].__contains__("{{")):
+                    count += 1
+                if(text[i].__contains__("}}")):
+                    count -= 1
+                if(count == 0):
+                    indexEnd = i
+                    break
+                tempInfoBox += "\n" + text[i]
+            i += 1
+        print(tempInfoBox)
+        input()
 
     def _extractCategory(self, text):
         for line in text:
@@ -82,5 +104,4 @@ def getParsedPage():
 
 if __name__ == '__main__':
     pagine = getParsedPage()
-    pagine.__getitem__(2).extractInformation()
-
+    print(pagine[2].extractInformation())
