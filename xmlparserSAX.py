@@ -100,7 +100,7 @@ class countHandler(xml.sax.handler.ContentHandler):
 
     def endElement(self, name):
         if name == 'page':
-            # self.tempPagina.extractInformation()
+            self.tempPagina.extractInformation()
             self.pagine.append(self.tempPagina)
             self.tempPagina = pagina()
 
@@ -118,4 +118,3 @@ def getParsedPage():
 
 if __name__ == '__main__':
     pagine = getParsedPage()
-    pagine[2].extractInformation()
