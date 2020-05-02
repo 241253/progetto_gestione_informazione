@@ -27,19 +27,19 @@ def contentTokenization(contenuto):
 
 
 #POPOLO L'INDICE LO SCHEMA
-schema = Schema(title=TEXT(stored=True), content=TEXT)
+schema_id = Schema(id=NUMERIC, title=TEXT(stored=True))
 
 #CREO L'INDICE
 if not os.path.exists("indexdir"):
    os.mkdir("indexdir")
-ix = create_in("indexdir", schema)
+id_ix = create_in("indexdir", schema_id)
 
 
 #POPOLO L'INDICE
-#writer = ix.writer()
+writer = id_ix.writer()
 pagine = xmlparserSAX.getParsedPage()
 for p in pagine:
-    contentTokenization(p.getContenuto())
-    #writer.add_document(title=p.getTitolo(), content=p.getContenuto())
-#writer.commit()
+    #contentTokenization(p.getContenuto())
+    writer.add_document(id=p.getId(), title=p.getTitolo())
+writer.commit()
 print('Fine creazione dell\'indice')
