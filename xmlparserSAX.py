@@ -2,7 +2,8 @@ import xml.sax
 
 
 class pagina:
-    def __init__(self):
+    def __init__(self, id):
+        self.id = id
         self.titolo = ''
         self.infobox = ''
         self.contenuto = ''
@@ -25,7 +26,10 @@ class pagina:
 
     def getTitolo(self):
         return self.titolo
-    
+
+    def getId(self):
+        return self.id
+
     def extractInformation(self):
         #estrae infobox
         self._extractInfobox(self.getContenuto().split('\n'))
@@ -84,9 +88,9 @@ class pagina:
 class countHandler(xml.sax.handler.ContentHandler):
     def __init__(self):
         self.pagine = []
-        self.tempPagina = pagina()
+        self.tempPagina = pagina(0)
         self.currentTag = ""
-        self.count = 0
+        self.id = 1
 
     def startElement(self, name, attr):
         self.currentTag = name
@@ -102,7 +106,8 @@ class countHandler(xml.sax.handler.ContentHandler):
         if name == 'page':
             self.tempPagina.extractInformation()
             self.pagine.append(self.tempPagina)
-            self.tempPagina = pagina()
+            self.tempPagina = pagina(self.id)
+            self.id += 1
 
     def getPagine(self):
         return self.pagine
