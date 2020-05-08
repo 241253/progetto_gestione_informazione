@@ -25,20 +25,51 @@ def contentTokenization(contenuto):
     return tokens
 
 
-#CREO LO SCHEMA DELL'INDICE
+#CREO LO SCHEMA DELL'INDICE DEGLI ID
 schema_id = Schema(id=NUMERIC, title=TEXT(stored=True))
+#CREO LO SCHEMA DELL'INDICE DEL DIZIONARIO
+schema_dict = Schema(termine=TEXT, posting=FieldType.vector(stored=True))
 
-#CREO L'INDICE
+#CREO L'INDICE DELL'ID
 if not os.path.exists("indexdir/index_id"):
    os.mkdir("indexdir/index_id")
 id_ix = create_in("indexdir/index_id", schema_id)
+#CREO L'INDICE DEL DIZIONARIO
+if not os.path.exists("indexdir/index_dict"):
+   os.mkdir("indexdir/index_dict")
+dict_ix = create_in("indexdir/index_dict", schema_dict)
 
-#POPOLO L'INDICE
-writer = id_ix.writer()
-pagine = xmlparserSAX.getParsedPage()
+#DIZIONARIO (CHE DIVENTA L'INDICE)
+dizionario = dict()
+
+def add_term(token, id):
+    if token not in dizionario.keys():
+        dizionario[token] = dict()
+        dizionario[token][id] = 1
+    else:
+        d = dizionario[token]
+        if id not in d.keys():
+            d[id] = 1
+        else:
+            d[id] += 1
+
+
 print('Creazione del\'indice in corso...')
+
+#POPOLO L'INDICE ID
+writer_id = id_ix.writer()
+pagine = xmlparserSAX.getParsedPage()
 for p in pagine:
-    writer. add_document(id=p.getId(), title=p.getTitolo())
-    #contentTokenization(p.getContenuto())
-writer.commit()
+    writer_id.add_document(id=p.getId(), title=p.getTitolo())
+    tokens = contentTokenization(p.getContenuto())
+    for t in tokens:
+        add_term(t, p.getId())
+writer_id.commit()
+
+#POPOLO L'INDICE DICT
+writer_dict = dict_ix.writer()
+for d in dizionario.keys():
+    writer_dict.add_document(d, dizionario[d])
+writer_dict.commit()
+
 print('Fine creazione dell\'indice')
