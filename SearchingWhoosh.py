@@ -7,7 +7,7 @@ from tkinter import ttk
 from tkinter import scrolledtext
 
 # APERTURA INDICE
-ix = index.open_dir("indexdir")
+ix = index.open_dir("indexdir/index_id")
 search_type = 'title'
 
 # GUI
@@ -26,6 +26,7 @@ txt.grid(column=0, row=1)
 
 # Creazione bottone di ricerca
 def search_clicked():
+    print(search_type)
     scrollview.delete('1.0', END)
     q = QueryParser(search_type, schema=ix.schema)  # QUERY SUL CONTENUTO
     r = q.parse(txt.get())
@@ -33,19 +34,21 @@ def search_clicked():
         results = s.search(r, limit=30)
         temp_text = ''
         for r in results:
-            scrollview.insert(END, r['title']+'\n')
+            scrollview.insert(END, r['title'] + '\n')
 search_btn = Button(window, text="Cerca", command=search_clicked)
 search_btn.grid(column=1, row=1)
 
 
 # Creazione bottoni di selezione di tipo ricerca
 def title_clicked():
+    global search_type
     search_type = 'title'
     lbl.configure(text="Ricerca per titolo:")
 title_btn = Button(window, text="Ricerca per titolo", command=title_clicked)
 title_btn.grid(column=0, row=2)
 
 def content_clicked():
+    global search_type
     search_type = 'content'
     lbl.configure(text="Ricerca per contenuto:")
 content_btn = Button(window, text="Ricerca per contenuto", command=content_clicked)
