@@ -28,7 +28,7 @@ def contentTokenization(contenuto):
 #CREO LO SCHEMA DELL'INDICE DEGLI ID
 schema_id = Schema(id=NUMERIC, title=TEXT(stored=True))
 #CREO LO SCHEMA DELL'INDICE DEL DIZIONARIO
-schema_dict = Schema(termine=TEXT, posting=TEXT(vector=True))
+schema_dict = Schema(termine=TEXT, posting=TEXT(vector=True, stored=True))
 
 #CREO L'INDICE DELL'ID
 if not os.path.exists("indexdir/index_id"):
