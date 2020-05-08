@@ -54,7 +54,7 @@ def add_term(token, id):
             d[id] += 1
 
 
-print('Creazione del\'indice id in corso...')
+print('Creazione dell\'indice id in corso...')
 #POPOLO L'INDICE ID
 writer_id = id_ix.writer()
 pagine = xmlparserSAX.getParsedPage()
@@ -66,7 +66,7 @@ for p in pagine:
 writer_id.commit()
 print('Fine creazione dell\'indice id')
 
-print('Creazione del\'indice dict in corso...')
+print('Creazione dell\'indice dict in corso...')
 #POPOLO L'INDICE DICT
 writer_dict = dict_ix.writer()
 for d in dizionario.keys():
