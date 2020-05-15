@@ -10,7 +10,7 @@ class pagina:
         self.categoria = list()
 
     def setTitolo(self, titolo):
-        self.titolo = titolo
+        self.titolo = self.titolo + titolo
 
     def setInfobox(self, infobox):
         self.infobox = infobox
