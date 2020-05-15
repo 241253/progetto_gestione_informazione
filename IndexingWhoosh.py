@@ -59,7 +59,7 @@ print('Creazione dell\'indice id in corso...')
 writer_id = id_ix.writer()
 pagine = xmlparserSAX.getParsedPage()
 for p in pagine:
-    writer_id.add_document(id=p.getId(), title=p.getTitolo())
+    # writer_id.add_document(id=p.getId(), title=p.getTitolo())
     tokens = contentTokenization(p.getContenuto())
     for t in tokens:
         add_term(t, p.getId())
@@ -70,6 +70,9 @@ print('Creazione dell\'indice dict in corso...')
 #POPOLO L'INDICE DICT
 writer_dict = dict_ix.writer()
 for d in dizionario.keys():
-    writer_dict.add_document(d, dizionario[d])
+    l = list()
+    for x in dizionario[d].keys():
+        l.append(f'{x}:{dizionario[d][x]}')
+    writer_dict.add_document(termine=d, posting=l)
 writer_dict.commit()
 print('Fine creazione dell\'indice dict')
