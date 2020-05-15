@@ -1,3 +1,5 @@
+import webbrowser
+
 import whoosh.index as index
 from whoosh.fields import *
 from whoosh.qparser import QueryParser
@@ -19,14 +21,17 @@ window.resizable(False, False)
 
 # Creazione label verifica tipo di ricerca
 lbl = Label(window, text='Ricerca per titolo:')
-lbl.grid(columnspan=2, row=0)
+lbl.grid(columnspan=20, row=0)
 
 # Creazione casella di testo
 txt = Entry(window, width=125)
-txt.grid(column=0, row=1)
+txt.grid(columnspan=18, row=1)
 
-def search_id(posting):
-    print(posting)
+risultati = list()
+for x in range(30):
+    risultati.append((Label(window, text=""), Label(window, text="")))
+
+def search_id(posting, index):
     for item in posting:
         q = QueryParser('id', schema=ix_id.schema)
         r = q.parse(item.split(':')[0])
@@ -34,21 +39,25 @@ def search_id(posting):
             results = s.search(r, limit=30)
             temp_text = ''
             for r in results:
-                temp_text += f"{r['title']} - en.wikipedia.org/wiki/{r['title']}\n"
-            scrollview.insert(END, temp_text)
+                risultati[index][0].configure(text=r['title'])
+                risultati[index][1].configure(text='en.wikipedia.org/wiki/' + str(r['title']), fg="blue", cursor="hand2")
+                risultati[index][1].bind('<Button-1>', lambda event: webbrowser.open('en.wikipedia.org/wiki/' + str(r['title'])))
+                index += 1
+    return index
+
 
 # Creazione bottone di ricerca
 def search_clicked():
-    scrollview.delete('1.0', END)
     q = QueryParser('termine', schema=ix_dict.schema)
     r = q.parse(txt.get())
     with ix_dict.searcher() as s:
         results = s.search(r, limit=30)
         temp_text = ''
+        index = 0
         for r in results:
-            search_id(r['posting'])
+            index = search_id(r['posting'], index)
 search_btn = Button(window, text="Cerca", command=search_clicked)
-search_btn.grid(column=1, row=1)
+search_btn.grid(column=18, columnspan=2, row=1)
 
 
 # Creazione bottoni di selezione di tipo ricerca
@@ -64,13 +73,16 @@ def content_clicked():
     search_type = 'content'
     lbl.configure(text="Ricerca per contenuto:")
 content_btn = Button(window, text="Ricerca per contenuto", command=content_clicked)
-content_btn.grid(column=0, row=3)
+content_btn.grid(column=1, row=2)
 
 # Scrollview per visualizzare il risultato della ricerca
-scrollview = scrolledtext.ScrolledText(window, width=100, height=10)
-scrollview.grid(columnspan=2, row=4, sticky="nesw")
+# scrollview = scrolledtext.ScrolledText(window, width=100, height=10)
+# scrollview.grid(columnspan=2, row=4, sticky="nesw")
+
+for x in range(30):
+    Label(window, text=f'{x}.').grid(column=0, row=x+3)
+    risultati[x][0].grid(columnspan=9, row=x+3)
+    risultati[x][1].grid(column=10, columnspan=10, row=x+3)
 
 # Loop finestra (mantiene la finestra aperta)
 window.mainloop()
-
-
