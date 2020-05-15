@@ -28,7 +28,7 @@ def contentTokenization(contenuto):
 #CREO LO SCHEMA DELL'INDICE DEGLI ID
 schema_id = Schema(id=NUMERIC, title=TEXT(stored=True))
 #CREO LO SCHEMA DELL'INDICE DEL DIZIONARIO
-schema_dict = Schema(termine=TEXT, posting=TEXT(vector=True, stored=True))
+schema_dict = Schema(termine=TEXT(stored=True), posting=TEXT(vector=True, stored=True))
 
 #CREO L'INDICE DELL'ID
 if not os.path.exists("indexdir/index_id"):
@@ -59,7 +59,7 @@ print('Creazione dell\'indice id in corso...')
 writer_id = id_ix.writer()
 pagine = xmlparserSAX.getParsedPage()
 for p in pagine:
-    # writer_id.add_document(id=p.getId(), title=p.getTitolo())
+    writer_id.add_document(id=p.getId(), title=p.getTitolo())
     tokens = contentTokenization(p.getContenuto())
     for t in tokens:
         add_term(t, p.getId())

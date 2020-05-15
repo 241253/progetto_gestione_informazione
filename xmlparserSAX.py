@@ -78,6 +78,9 @@ class pagina:
             if line.__contains__('== References ==') or line.__contains__('== External links ==') or line[:11] == '[[Category:':
                 break
             else:
+                line = line.replace("'", "")
+                line = line.replace('"', "")
+                line = line.replace("`", "")
                 tempText += line + '\n'
         self.contenuto = tempText
 

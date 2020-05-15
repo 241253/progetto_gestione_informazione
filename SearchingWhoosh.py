@@ -8,7 +8,7 @@ from tkinter import scrolledtext
 
 # APERTURA INDICE
 ix = index.open_dir("indexdir/index_id")
-search_type = 'title'
+search_type = 'termine'
 
 # GUI
 # Creazione finestra
@@ -26,7 +26,6 @@ txt.grid(column=0, row=1)
 
 # Creazione bottone di ricerca
 def search_clicked():
-    print(search_type)
     scrollview.delete('1.0', END)
     q = QueryParser(search_type, schema=ix.schema)  # QUERY SUL CONTENUTO
     r = q.parse(txt.get())
