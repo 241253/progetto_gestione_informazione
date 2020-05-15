@@ -2,6 +2,7 @@ import webbrowser
 
 import whoosh.index as index
 from _cffi_backend import callback
+from tkhtmlview import HTMLLabel
 from whoosh.fields import *
 from whoosh.qparser import QueryParser
 import os, os.path
@@ -30,7 +31,13 @@ txt.grid(columnspan=18, row=1)
 
 risultati = list()
 for x in range(30):
-    risultati.append((Label(window, text=""), Label(window, text="")))
+    risultati.append((Label(window, text=""), Label(window, text="", fg="blue", cursor="hand2")))
+
+
+def callback(url):
+    print('url:',url)
+    webbrowser.open_new_tab(url)
+
 
 def search_id(posting, index):
     for item in posting:
@@ -42,9 +49,9 @@ def search_id(posting, index):
             for r in results:
                 url = 'en.wikipedia.org/wiki/' + str(r['title'])
                 risultati[index][0].configure(text=r['title'])
-                risultati[index][1].configure(text=url, fg="blue", cursor="hand2")
-                print(url)
-                risultati[index][1].bind(f'<Button-1>', lambda event: webbrowser.open_new(url))
+                risultati[index][1].configure(text=url)
+                print(risultati[index][1].cget("text"))
+                risultati[index][1].bind(f'<Button-1>', lambda event: callback(risultati[index][1].cget("text")))
                 index += 1
     return index
 
