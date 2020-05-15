@@ -7,7 +7,8 @@ from tkinter import ttk
 from tkinter import scrolledtext
 
 # APERTURA INDICE
-ix = index.open_dir("indexdir/index_id")
+ix_id = index.open_dir("indexdir/index_id")
+ix_dict = index.open_dir("indexdir/index_dict")
 search_type = 'termine'
 
 # GUI
@@ -24,16 +25,28 @@ lbl.grid(columnspan=2, row=0)
 txt = Entry(window, width=125)
 txt.grid(column=0, row=1)
 
+def search_id(posting):
+    print(posting)
+    for item in posting:
+        q = QueryParser('id', schema=ix_id.schema)
+        r = q.parse(item.split(':')[0])
+        with ix_id.searcher() as s:
+            results = s.search(r, limit=30)
+            temp_text = ''
+            for r in results:
+                temp_text += f"{r['title']} - www.wikipedia.org/en/{r['title']}\n"
+            scrollview.insert(END, temp_text)
+
 # Creazione bottone di ricerca
 def search_clicked():
     scrollview.delete('1.0', END)
-    q = QueryParser(search_type, schema=ix.schema)  # QUERY SUL CONTENUTO
+    q = QueryParser('termine', schema=ix_dict.schema)
     r = q.parse(txt.get())
-    with ix.searcher() as s:
+    with ix_dict.searcher() as s:
         results = s.search(r, limit=30)
         temp_text = ''
         for r in results:
-            scrollview.insert(END, r['title'] + '\n')
+            search_id(r['posting'])
 search_btn = Button(window, text="Cerca", command=search_clicked)
 search_btn.grid(column=1, row=1)
 
