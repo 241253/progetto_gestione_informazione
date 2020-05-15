@@ -39,9 +39,10 @@ def search_id(posting, index):
             results = s.search(r, limit=30)
             temp_text = ''
             for r in results:
+                url = 'en.wikipedia.org/wiki/' + str(r['title'])
                 risultati[index][0].configure(text=r['title'])
-                risultati[index][1].configure(text='en.wikipedia.org/wiki/' + str(r['title']), fg="blue", cursor="hand2")
-                risultati[index][1].bind('<Button-1>', lambda event: webbrowser.open('en.wikipedia.org/wiki/' + str(r['title'])))
+                risultati[index][1].configure(text=url, fg="blue", cursor="hand2")
+                risultati[index][1].bind(f'<Button-{index+1}>', lambda event: webbrowser.open(url))
                 index += 1
     return index
 
@@ -56,6 +57,11 @@ def search_clicked():
         index = 0
         for r in results:
             index = search_id(r['posting'], index)
+        while index < 30:
+            risultati[index][0].configure(text="")
+            risultati[index][1].configure(text="")
+            index += 1
+
 search_btn = Button(window, text="Cerca", command=search_clicked)
 search_btn.grid(column=18, columnspan=2, row=1)
 
