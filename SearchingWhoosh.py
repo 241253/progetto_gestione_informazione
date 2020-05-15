@@ -34,7 +34,7 @@ def search_id(posting):
             results = s.search(r, limit=30)
             temp_text = ''
             for r in results:
-                temp_text += f"{r['title']} - www.wikipedia.org/en/{r['title']}\n"
+                temp_text += f"{r['title']} - en.wikipedia.org/wiki/{r['title']}\n"
             scrollview.insert(END, temp_text)
 
 # Creazione bottone di ricerca
