@@ -33,14 +33,9 @@ def search_id(posting, countUrl):
                 l.append((label_num, label_title, button_url))
                 countUrl += 1
 
-            for i in range(len(l)):
-                l[i][0].configure(text=f'{i + countUrl}.')
-                l[i][0].grid(column=0, row=i + countUrl + 3)
-                l[i][1].grid(columnspan=9, row=i + countUrl + 3)
-                l[i][2].grid(column=10, columnspan=10, row=i + countUrl + 3)
-
     return countUrl, l
 
+# Funzione di ricerca per termine (globale)
 def search_clicked():
     global displayed_results
     # resetto interfaccia grafica (parte risultati)
@@ -60,6 +55,11 @@ def search_clicked():
             countUrl, l = search_id(r['posting'], countUrl)
             for item in l:
                 displayed_results.append(item)
+        for i in range(countUrl):
+            displayed_results[i][0].configure(text=f'{i + 1}.')
+            displayed_results[i][0].grid(column=0, row=i + 3)
+            displayed_results[i][1].grid(columnspan=9, row=i + 3)
+            displayed_results[i][2].grid(column=10, columnspan=10, row=i + 3)
 
 # APERTURA INDICE
 ix_id = index.open_dir("indexdir/index_id")
