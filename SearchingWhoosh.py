@@ -1,11 +1,7 @@
 import webbrowser
 import whoosh.index as index
-from whoosh.fields import *
 from whoosh.qparser import QueryParser
-import os, os.path
 from tkinter import *
-from tkinter import ttk
-from tkinter import scrolledtext
 
 # LOGICA
 # Lista componenti grafici dei risultati
@@ -40,7 +36,6 @@ def search_clicked():
     global displayed_results
     # resetto interfaccia grafica (parte risultati)
     for item in displayed_results:
-        print(item[0].cget('text'), item[1].cget('text'))
         item[0].destroy()
         item[1].destroy()
         item[2].destroy()
@@ -70,7 +65,7 @@ search_type = 'termine'
 # Creazione finestra
 window = Tk()
 window.title("Il TOP SEARCHER di J e Z")
-window.resizable(True, True)
+window.resizable(False, True)
 
 # Creazione label verifica tipo di ricerca
 lbl = Label(window, text='Ricerca per titolo:')

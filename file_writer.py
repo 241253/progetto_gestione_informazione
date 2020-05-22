@@ -1,7 +1,7 @@
-with open('./wiki.xml', 'r', encoding='utf-8') as file:
+with open('./test_enwiki.xml', 'r', encoding='utf-8') as file:
     data = file.readlines()
     count = 0
-    with open('test_wiki.xml', 'a+', encoding='utf-8') as file2:
+    with open('wiki_1.xml', 'a+', encoding='utf-8') as file2:
         for l in data:
             if '</page>' in l:
                 count +=1
