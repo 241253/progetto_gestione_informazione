@@ -1,5 +1,4 @@
 import webbrowser
-
 import whoosh.index as index
 from whoosh.fields import *
 from whoosh.qparser import QueryParser
@@ -9,6 +8,9 @@ from tkinter import ttk
 from tkinter import scrolledtext
 
 # LOGICA
+# Lista componenti grafici dei risultati
+displayed_results = list()
+
 # Funzione che assegna l'url di una pagina ad un bottone
 def callback(url):
     def wrap(u = url):
@@ -17,34 +19,47 @@ def callback(url):
 
 # Funzione di ricerca per id
 def search_id(posting, countUrl):
+    l = list()
     for item in posting:
         q = QueryParser('id', schema=ix_id.schema)
         r = q.parse(item.split(':')[0])
         with ix_id.searcher() as searcher:
             results = searcher.search(r, limit=30)
-            l = list()
             for r in results:
                 url = 'en.wikipedia.org/wiki/' + str(r['title'])
+                label_num = Label(window, text='0.')
                 label_title = Label(window, text=r['title'])
                 button_url = Button(window, text="Vai al sito", command=callback(url))
-                l.append((label_title, button_url))
+                l.append((label_num, label_title, button_url))
                 countUrl += 1
 
             for i in range(len(l)):
-                Label(window, text=f'{i + countUrl}.').grid(column=0, row=i + countUrl + 3)
-                l[i][0].grid(columnspan=9, row=i + countUrl + 3)
-                l[i][1].grid(column=10, columnspan=10, row=i + countUrl + 3)
+                l[i][0].configure(text=f'{i + countUrl}.')
+                l[i][0].grid(column=0, row=i + countUrl + 3)
+                l[i][1].grid(columnspan=9, row=i + countUrl + 3)
+                l[i][2].grid(column=10, columnspan=10, row=i + countUrl + 3)
 
-    return countUrl
+    return countUrl, l
 
 def search_clicked():
+    global displayed_results
+    # resetto interfaccia grafica (parte risultati)
+    for item in displayed_results:
+        print(item[0].cget('text'), item[1].cget('text'))
+        item[0].destroy()
+        item[1].destroy()
+        item[2].destroy()
+    displayed_results = list()
+
     q = QueryParser('termine', schema=ix_dict.schema)
     r = q.parse(txt.get())
     with ix_dict.searcher() as searcher:
         results = searcher.search(r, limit=30)
         countUrl = 0
         for r in results:
-            countUrl = search_id(r['posting'], countUrl)
+            countUrl, l = search_id(r['posting'], countUrl)
+            for item in l:
+                displayed_results.append(item)
 
 # APERTURA INDICE
 ix_id = index.open_dir("indexdir/index_id")
