@@ -1,6 +1,5 @@
 import webbrowser
 
-import whoosh
 from whoosh import scoring
 import whoosh.index as index
 from whoosh.qparser import QueryParser
