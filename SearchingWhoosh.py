@@ -1,4 +1,7 @@
 import webbrowser
+
+import whoosh
+from whoosh import scoring
 import whoosh.index as index
 from whoosh.qparser import QueryParser
 from tkinter import *
@@ -13,13 +16,16 @@ def callback(url):
         webbrowser.open_new(u)
     return wrap
 
+#algoritmo di ranking che usa whoosh
+wBM25 = scoring.BM25F(B=0.75, K1=1.5, K3=1.5)
+
 # Funzione di ricerca per id
 def search_id(posting, countUrl):
     l = list()
     for item in posting:
         q = QueryParser('id', schema=ix_id.schema)
         r = q.parse(item.split(':')[0])
-        with ix_id.searcher() as searcher:
+        with ix_id.searcher(weighting=wBM25) as searcher:
             results = searcher.search(r, limit=30)
             for r in results:
                 url = 'en.wikipedia.org/wiki/' + str(r['title'])
@@ -43,7 +49,7 @@ def search_clicked():
 
     q = QueryParser('termine', schema=ix_dict.schema)
     r = q.parse(txt.get())
-    with ix_dict.searcher() as searcher:
+    with ix_dict.searcher(weighting=wBM25) as searcher:
         results = searcher.search(r, limit=30)
         countUrl = 0
         for r in results:
