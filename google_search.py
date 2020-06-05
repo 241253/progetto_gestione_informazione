@@ -30,4 +30,10 @@ def ricerca(i):
 
 
 if __name__ == '__main__':
-    ricerca(29)
+    file = open('ricerca.txt', 'r')
+    l = []
+    with file:
+        for x in file:
+            l.append(x)
+    l = [i[30::].replace('_', ' ').replace('\n', '') for i in l]
+    print(l)
