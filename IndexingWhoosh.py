@@ -56,7 +56,7 @@ def add_term(token, id):
 
 #POPOLO L'INDICE ID
 writer_id = id_ix.writer()
-print('parsing dump wikipedia')
+print('parsing dump wikipedia in corso...')
 pagine = xmlparserSAX.getParsedPage()
 print('Creazione dell\'indice id in corso...')
 for p in pagine:
