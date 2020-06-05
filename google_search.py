@@ -31,9 +31,18 @@ def ricerca(i):
 
 if __name__ == '__main__':
     file = open('ricerca.txt', 'r')
-    l = []
+    pages = []
     with file:
         for x in file:
-            l.append(x)
-    l = [i[30::].replace('_', ' ').replace('\n', '') for i in l]
-    print(l)
+            pages.append(x)
+    pages = [i[30::].replace('_', ' ').replace('\n', '') for i in pages]
+    id = []
+    print(pages)
+    for page in pages:
+        with open('enwiki-20200520-pages-articles-multistream-index.txt', 'r', encoding='utf-8') as file:
+            lines = file.readlines()
+            for line in lines:
+                if line.split(':')[2].strip(' ') == page.strip(' '):
+                    id.append(line.split(':')[1])
+                    break;
+    print(id)
