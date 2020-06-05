@@ -30,4 +30,4 @@ def ricerca(i):
 
 
 if __name__ == '__main__':
-    ricerca(26)
+    ricerca(29)
