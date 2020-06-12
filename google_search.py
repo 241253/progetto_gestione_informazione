@@ -29,19 +29,28 @@ def ricerca(i):
             file.write(x+'\n')
 
 
+def getTitle(s):
+    l = s.replace('\n', '').split(':')
+    temp = ''
+    for x in range(2,len(l)):
+        temp += l[x] + ('' if x == len(l) else ':')
+    return temp[:-1]
+
 if __name__ == '__main__':
     file = open('ricerca.txt', 'r')
     pages = []
     with file:
         for x in file:
             pages.append(x)
-    pages = [i[30::].replace('_', ' ').replace('\n', '') for i in pages]
+    pages = [i[30::].replace('_', ' ').replace('\n', '').replace('%3A', ':').replace('%27', '\'').replace('%E2', 'â').replace('%93', '“').replace('%80', '€') for i in pages]
+    # for i in pages:
+    #     print(i)
     id = []
-    print(len(pages))
     with open('enwiki-20200520-pages-articles-multistream-index.txt', 'r', encoding='utf-8') as file:
         lines = file.readlines()
         print(len(lines))
         for line in lines:
-            if line.split(':')[2].strip(' ') in pages:
+            if getTitle(line) in pages:
+                print(getTitle(line),' --> ', line.split(':')[1])
                 id.append(line.split(':')[1])
     print(id)
