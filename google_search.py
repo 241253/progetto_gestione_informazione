@@ -53,4 +53,5 @@ if __name__ == '__main__':
             if getTitle(line) in pages:
                 print(getTitle(line),' --> ', line.split(':')[1])
                 id.append(line.split(':')[1])
+    print('LUNGHEZZA: ', len(id))
     print(id)
