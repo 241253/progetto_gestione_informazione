@@ -50,13 +50,31 @@ if __name__ == '__main__':
     with file:
         for x in file:
             pages.append(x)
-    pages = [correctFormat(unquote(i[30::])) for i in pages]
 
-    id = []
-    with open('enwiki-20200520-pages-articles-multistream-index.txt', 'r', encoding='utf-8') as file:
-        lines = file.readlines()
-        for line in lines:
-            if getTitle(line) in pages:
-                print(getTitle(line),' --> ', line.split(':')[1])
-                id.append(line.split(':')[1])
-    print('LUNGHEZZA: ', len(id))
+    from selenium import webdriver
+    from selenium.webdriver.common.keys import Keys
+
+    driver = webdriver.Chrome()
+    driver.get("https://en.wikipedia.org/wiki/Special:Export")
+    url = driver.find_element_by_id('ooui-php-1')
+    nome = driver.find_element_by_xpath('//textarea[@name="pages"]')
+    button = driver.find_element_by_id('ooui-php-12')
+    for p in pages:
+        url.send_keys(Keys.CONTROL + "a")
+        url.send_keys(Keys.BACKSPACE)
+        url.send_keys(p)
+        nome.send_keys(Keys.CONTROL + "a")
+        nome.send_keys(Keys.BACKSPACE)
+        nome.send_keys(correctFormat(unquote(p[30::])))
+        button.click()
+        time.sleep(0.35)
+    driver.close()
+
+    # id = []
+    # with open('enwiki-20200520-pages-articles-multistream-index.txt', 'r', encoding='utf-8') as file:
+    #     lines = file.readlines()
+    #     for line in lines:
+    #         if getTitle(line) in pages:
+    #             print(getTitle(line),' --> ', line.split(':')[1])
+    #             id.append(line.split(':')[1])
+    # print('LUNGHEZZA: ', len(id))
