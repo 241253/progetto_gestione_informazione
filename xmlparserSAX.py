@@ -1,6 +1,7 @@
 import xml.sax
 import bz2
-
+from os import listdir
+from os.path import isfile, join
 
 class pagina:
     def __init__(self, id):
@@ -87,18 +88,21 @@ class pagina:
         self.contenuto = tempText
 
     def __str__(self):
-        return f'Titolo:{self.titolo.encode("utf-8")}\nContenuto:{self.contenuto.encode("utf-8")}\n\n\n'
+        return f'ID:{self.id}\nTitolo:{self.titolo.encode("utf-8")}\nContenuto:{self.contenuto.encode("utf-8")}\n'
 
 
 class countHandler(xml.sax.handler.ContentHandler):
     def __init__(self):
+        self.primo_id = True
         self.pagine = []
         self.tempPagina = pagina(0)
         self.currentTag = ""
-        self.id = 1
+        self.id = ""
 
     def startElement(self, name, attr):
         self.currentTag = name
+        if(name == 'page'):
+            self.primo_id = True
 
     def characters(self, content):
         if content.strip() != '':
@@ -106,13 +110,19 @@ class countHandler(xml.sax.handler.ContentHandler):
                 self.tempPagina.setTitolo(content)
             elif self.currentTag == 'text':
                 self.tempPagina.setContenuto(content)
+            elif self.currentTag == 'id':
+                if(self.primo_id == True):
+                    self.id += content
+
 
     def endElement(self, name):
-        if name == 'page':
+        if name == 'id':
+            self.primo_id = False
+        elif name == 'page':
             self.tempPagina.extractInformation()
             self.pagine.append(self.tempPagina)
             self.tempPagina = pagina(self.id)
-            self.id += 1
+            self.id = ""
 
     def getPagine(self):
         return self.pagine
@@ -122,17 +132,22 @@ def getParsedPage():
     parser = xml.sax.make_parser()
     handler = countHandler()
     parser.setContentHandler(handler)
-    source_file = bz2.BZ2File('test_enwiki-20200520-pages-articles-multistream1.xml-p1p30303.bz2', "r")
-    for line in source_file:
-        parser.feed(line.decode('utf-8'))
-    # parser.parse('./wiki.xml')
-    return handler.getPagine()
+
+    pagine = list()
+    dumps = [f for f in listdir("dump") if isfile(join("dump", f))]
+    for d in dumps:
+        # source_file = bz2.BZ2File('test_enwiki-20200520-pages-articles-multistream1.xml-p1p30303.bz2', "r")
+        # for line in source_file:
+        #     parser.feed(line.decode('utf-8'))
+        # parser.parse('./wiki.xml')
+        parser.parse("dump/" + d)
+        pagine.extend(handler.getPagine())
+    return pagine
 
 
 if __name__ == '__main__':
-    print('inizio parsing')
+    print('Inizio parsing')
     pagine = getParsedPage()
-    print('fine parsing')
-
-    for x in range(10):
-        print(pagine[x])
+    print('Fine parsing')
+    for p in pagine:
+        print(p)
