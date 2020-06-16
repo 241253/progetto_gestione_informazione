@@ -4,8 +4,8 @@ from os import listdir
 from os.path import isfile, join
 
 class pagina:
-    def __init__(self, id):
-        self.id = id
+    def __init__(self):
+        self.id = ''
         self.titolo = ''
         self.infobox = ''
         self.contenuto = ''
@@ -31,6 +31,9 @@ class pagina:
 
     def getId(self):
         return self.id
+
+    def setId(self, id):
+        self.id += id
 
     def extractInformation(self):
         # estrae infobox
@@ -95,9 +98,8 @@ class countHandler(xml.sax.handler.ContentHandler):
     def __init__(self):
         self.primo_id = True
         self.pagine = []
-        self.tempPagina = pagina(0)
+        self.tempPagina = pagina()
         self.currentTag = ""
-        self.id = ""
 
     def startElement(self, name, attr):
         self.currentTag = name
@@ -112,17 +114,16 @@ class countHandler(xml.sax.handler.ContentHandler):
                 self.tempPagina.setContenuto(content)
             elif self.currentTag == 'id':
                 if(self.primo_id == True):
-                    self.id += content
+                    self.tempPagina.setId(content)
 
 
     def endElement(self, name):
         if name == 'id':
             self.primo_id = False
-        elif name == 'page':
+        if name == 'page':
             self.tempPagina.extractInformation()
             self.pagine.append(self.tempPagina)
-            self.tempPagina = pagina(self.id)
-            self.id = ""
+            self.tempPagina = pagina()
 
     def getPagine(self):
         return self.pagine
@@ -149,5 +150,3 @@ if __name__ == '__main__':
     print('Inizio parsing')
     pagine = getParsedPage()
     print('Fine parsing')
-    for p in pagine:
-        print(p)
