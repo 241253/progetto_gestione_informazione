@@ -1,8 +1,13 @@
 import urllib
+from selenium.webdriver.support import expected_conditions as EC
 
 from googlesearch import search
 from urllib.parse import unquote
 import time
+
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+
 
 def google_search(query):
     my_results_list = []
@@ -54,12 +59,12 @@ if __name__ == '__main__':
     from selenium import webdriver
     from selenium.webdriver.common.keys import Keys
 
-    driver = webdriver.Chrome()
+    driver = webdriver.Firefox()
     driver.get("https://en.wikipedia.org/wiki/Special:Export")
-    url = driver.find_element_by_id('ooui-php-1')
-    nome = driver.find_element_by_xpath('//textarea[@name="pages"]')
-    button = driver.find_element_by_id('ooui-php-12')
     for p in pages:
+        url = driver.find_element_by_xpath('//*[@id="ooui-php-1"]')
+        nome = driver.find_element_by_xpath('//*[@id="ooui-php-2"]')
+        button = driver.find_element_by_xpath('//*[@id="ooui-php-12"]/button')
         url.send_keys(Keys.CONTROL + "a")
         url.send_keys(Keys.BACKSPACE)
         url.send_keys(p)
@@ -69,12 +74,3 @@ if __name__ == '__main__':
         button.click()
         time.sleep(0.35)
     driver.close()
-
-    # id = []
-    # with open('enwiki-20200520-pages-articles-multistream-index.txt', 'r', encoding='utf-8') as file:
-    #     lines = file.readlines()
-    #     for line in lines:
-    #         if getTitle(line) in pages:
-    #             print(getTitle(line),' --> ', line.split(':')[1])
-    #             id.append(line.split(':')[1])
-    # print('LUNGHEZZA: ', len(id))
