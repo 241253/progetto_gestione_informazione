@@ -1,4 +1,7 @@
+import urllib
+
 from googlesearch import search
+from urllib.parse import unquote
 import time
 
 def google_search(query):
@@ -36,15 +39,19 @@ def getTitle(s):
         temp += l[x] + ('' if x == len(l) else ':')
     return temp[:-1]
 
+def correctFormat(s):
+    s=s.replace('_', ' ')
+    s=s.replace('\n', '')
+    return s
+
 if __name__ == '__main__':
     file = open('ricerca.txt', 'r')
     pages = []
     with file:
         for x in file:
             pages.append(x)
-    pages = [i[30::].replace('_', ' ').replace('\n', '').replace('%3A', ':').replace('%27', '\'').replace('%E2', 'â').replace('%93', '“').replace('%80', '€') for i in pages]
-    # for i in pages:
-    #     print(i)
+    pages = [correctFormat(unquote(i[30::])) for i in pages]
+
     id = []
     with open('enwiki-20200520-pages-articles-multistream-index.txt', 'r', encoding='utf-8') as file:
         lines = file.readlines()
