@@ -25,68 +25,22 @@ def contentTokenization(contenuto):
     return tokens
 
 
-# #CREO LO SCHEMA DELL'INDICE DEGLI ID
-# schema_id = Schema(id=NUMERIC, title=TEXT(stored=True))
-# #CREO LO SCHEMA DELL'INDICE DEL DIZIONARIO
-# schema_dict = Schema(termine=TEXT(stored=True), posting=TEXT(vector=True, stored=True))
-
 # CREO IL NUOVO INDICE DI PROVA
-schema = Schema(id=NUMERIC, title = TEXT(stored=True), body = TEXT(stored=True), category = TEXT(stored=True), infobox = TEXT(stored=True))
+schema = Schema(id=NUMERIC, title=TEXT(stored=True), body=TEXT(stored=True), category=TEXT(stored=True), infobox=TEXT(stored=True))
 # CREO L'INDICE
 if not os.path.exists("indexdir/index"):
     os.mkdir("indexdir/index")
 index = create_in("indexdir/index", schema)
-
-# #CREO L'INDICE DELL'ID
-# if not os.path.exists("indexdir/index_id"):
-#    os.mkdir("indexdir/index_id")
-# id_ix = create_in("indexdir/index_id", schema_id)
-# #CREO L'INDICE DEL DIZIONARIO
-# if not os.path.exists("indexdir/index_dict"):
-#    os.mkdir("indexdir/index_dict")
-# dict_ix = create_in("indexdir/index_dict", schema_dict)
-
-# #DIZIONARIO (CHE DIVENTA L'INDICE)
-# dizionario = dict()
-#
-# def add_term(token, id):
-#     if token not in dizionario.keys():
-#         dizionario[token] = dict()
-#         dizionario[token][id] = 1
-#     else:
-#         d = dizionario[token]
-#         if id not in d.keys():
-#             d[id] = 1
-#         else:
-#             d[id] += 1
 
 
 #POPOLO L'INDICE ID
 writer = index.writer()
 print('parsing dump wikipedia in corso...')
 pagine = xmlparserSAX.getParsedPage()
-print('Fine parsing dump')
-print('Creazione dell\'indice index in corso...')
+print('parsing dump wikipedia terminato\n')
 
+print('Creazione dell\'indice in corso...')
 for p in pagine:
-    writer.add_document(id=p.getId(), title=p.getTitolo(), body = p.getContenuto(), category = p.getCategoria(), infobox = p.getInfobox())
+    writer.add_document(id=p.getId(), title=p.getTitolo(), body=p.getContenuto(), category=p.getCategoria(), infobox=p.getInfobox())
 writer.commit()
-print('Fine creazione dell\'indice index')
-
-# for p in pagine:
-#     writer_id.add_document(id=p.getId(), title=p.getTitolo())
-#     tokens = contentTokenization(p.getContenuto())
-#     for t in tokens:
-#         add_term(t, p.getId())
-# writer_id.commit()
-# print('Fine creazione dell\'indice id')
-#
-# print('Creazione dell\'indice dict in corso...')
-# #POPOLO L'INDICE DICT
-# writer_dict = dict_ix.writer()
-# for d in dizionario.keys():
-#     l = list()
-#     for x in dizionario[d].keys():
-#         l.append(f'{x}:{dizionario[d][x]}')
-#     writer_dict.add_document(termine=d, posting=l)
-# writer_dict.commit()
+print('Fine creazione dell\'indice\n')
