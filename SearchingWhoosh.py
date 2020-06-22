@@ -8,6 +8,8 @@ from tkinter import *
 
 # LOGICA
 # Lista componenti grafici dei risultati
+from whoosh.scoring import MultiWeighting, TF_IDF, Frequency
+
 displayed_results = list()
 
 # Funzione che assegna l'url di una pagina ad un bottone
@@ -17,7 +19,8 @@ def callback(url):
     return wrap
 
 #algoritmo di ranking che usa whoosh
-wBM25 = scoring.BM25F(B=0.75, title_B=2.0, body_B=1.0, category_B=1.0, infobox_B=1.0, K1=1.5, K3=1.5)
+wBM25 = scoring.BM25F(B=0.75, title_B=2.0, body_B=1.0, category_B=1.0, infobox_B=1.0, K1=1.5)
+mw = MultiWeighting(Frequency(), id=TF_IDF(), keys=wBM25)
 
 # Funzione di ricerca per termine (globale)
 def search_clicked():
@@ -31,11 +34,13 @@ def search_clicked():
 
     q = MultifieldParser(['title', 'body', 'category', 'infobox'], schema=ix.schema)
     r = q.parse(txt.get())
-    with ix.searcher(weighting=wBM25) as searcher:
+    with ix.searcher(weighting=mw) as searcher:
         results = searcher.search(r, limit=30)
         # countUrl = 0
         for r in results:
-            print(r['title'], r.score)
+            if(r['title']=='Apple Inc.'):
+                print(r['body'])
+            # print(r['title'], r.score)
             url = 'en.wikipedia.org/wiki/' + str(r['title'])
             label_num = Label(window, text='0.')
             label_title = Label(window, text=r['title'])
