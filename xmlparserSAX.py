@@ -2,6 +2,7 @@ import xml.sax
 from os import listdir
 from os.path import isfile, join
 
+
 class pagina:
     def __init__(self):
         self.id = ''
@@ -108,7 +109,7 @@ class countHandler(xml.sax.handler.ContentHandler):
 
     def startElement(self, name, attr):
         self.currentTag = name
-        if(name == 'page'):
+        if (name == 'page'):
             self.primo_id = True
 
     def characters(self, content):
@@ -118,9 +119,8 @@ class countHandler(xml.sax.handler.ContentHandler):
             elif self.currentTag == 'text':
                 self.tempPagina.setContenuto(content)
             elif self.currentTag == 'id':
-                if(self.primo_id == True):
+                if (self.primo_id == True):
                     self.tempPagina.setId(content)
-
 
     def endElement(self, name):
         if name == 'id':
@@ -140,6 +140,10 @@ def getParsedPage():
     pagine = list()
     dumps = [f for f in listdir("dump") if isfile(join("dump", f))]
     for d in dumps:
+        # source_file = bz2.BZ2File('test_enwiki-20200520-pages-articles-multistream1.xml-p1p30303.bz2', "r")
+        # for line in source_file:
+        #     parser.feed(line.decode('utf-8'))
+        # parser.parse('./wiki.xml')
         handler = countHandler()
         parser.setContentHandler(handler)
         parser.parse("dump/" + d)
