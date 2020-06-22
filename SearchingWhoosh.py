@@ -3,6 +3,7 @@ import webbrowser
 from whoosh import scoring
 import whoosh.index as index
 from whoosh.qparser import QueryParser
+from whoosh.qparser import MultifieldParser
 from tkinter import *
 
 # LOGICA
@@ -16,25 +17,7 @@ def callback(url):
     return wrap
 
 #algoritmo di ranking che usa whoosh
-wBM25 = scoring.BM25F(B=0.75, K1=1.5, K3=1.5)
-
-# Funzione di ricerca per id
-def search_id(posting, countUrl):
-    l = list()
-    for item in posting:
-        q = QueryParser('id', schema=ix_id.schema)
-        r = q.parse(item.split(':')[0])
-        with ix_id.searcher(weighting=wBM25) as searcher:
-            results = searcher.search(r, limit=30)
-            for r in results:
-                url = 'en.wikipedia.org/wiki/' + str(r['title'])
-                label_num = Label(window, text='0.')
-                label_title = Label(window, text=r['title'])
-                button_url = Button(window, text="Vai al sito", command=callback(url))
-                l.append((label_num, label_title, button_url))
-                countUrl += 1
-
-    return countUrl, l
+wBM25 = scoring.BM25F(B=0.75, title_B=2.0, body_B=1.0, category_B=1.0, infobox_B=1.0, K1=1.5, K3=1.5)
 
 # Funzione di ricerca per termine (globale)
 def search_clicked():
@@ -46,25 +29,28 @@ def search_clicked():
         item[2].destroy()
     displayed_results = list()
 
-    q = QueryParser('termine', schema=ix_dict.schema)
+    q = MultifieldParser(['title', 'body', 'category', 'infobox'], schema=ix.schema)
     r = q.parse(txt.get())
-    with ix_dict.searcher(weighting=wBM25) as searcher:
+    with ix.searcher(weighting=wBM25) as searcher:
         results = searcher.search(r, limit=30)
-        countUrl = 0
+        # countUrl = 0
         for r in results:
-            countUrl, l = search_id(r['posting'], countUrl)
-            for item in l:
-                displayed_results.append(item)
-        for i in range(countUrl):
+            print(r['title'], r.score)
+            url = 'en.wikipedia.org/wiki/' + str(r['title'])
+            label_num = Label(window, text='0.')
+            label_title = Label(window, text=r['title'])
+            button_url = Button(window, text="Vai al sito", command=callback(url))
+            displayed_results.append((label_num, label_title, button_url))
+
+        for i in range(len(displayed_results)):
             displayed_results[i][0].configure(text=f'{i + 1}.')
             displayed_results[i][0].grid(column=0, row=i + 3)
             displayed_results[i][1].grid(columnspan=9, row=i + 3)
             displayed_results[i][2].grid(column=10, columnspan=10, row=i + 3)
 
 # APERTURA INDICE
-ix_id = index.open_dir("indexdir/index_id")
-ix_dict = index.open_dir("indexdir/index_dict")
-search_type = 'termine'
+ix = index.open_dir("indexdir/index")
+search_type = 'id'
 
 # GUI
 # Creazione finestra

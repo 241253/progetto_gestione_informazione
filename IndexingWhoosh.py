@@ -55,11 +55,9 @@ def add_term(token, id):
 
 
 #POPOLO L'INDICE ID
-start_time = datetime.time
 writer_id = id_ix.writer()
 print('parsing dump wikipedia in corso...')
 pagine = xmlparserSAX.getParsedPage()
-print('parsing dump wikipedia finito...\n')
 print('Creazione dell\'indice id in corso...')
 for p in pagine:
     writer_id.add_document(id=p.getId(), title=p.getTitolo())
@@ -67,7 +65,7 @@ for p in pagine:
     for t in tokens:
         add_term(t, p.getId())
 writer_id.commit()
-print('Fine creazione dell\'indice id\n')
+print('Fine creazione dell\'indice id')
 
 print('Creazione dell\'indice dict in corso...')
 #POPOLO L'INDICE DICT
@@ -78,5 +76,4 @@ for d in dizionario.keys():
         l.append(f'{x}:{dizionario[d][x]}')
     writer_dict.add_document(termine=d, posting=l)
 writer_dict.commit()
-print('Fine creazione dell\'indice dict\n')
-print('sono passati: ', datetime.time - start_time, ' secondi')
+print('Fine creazione dell\'indice dict')

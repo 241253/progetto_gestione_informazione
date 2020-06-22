@@ -31,6 +31,12 @@ class pagina:
     def getId(self):
         return self.id
 
+    def getCategoria(self):
+        return '\n'.join(self.categoria)
+
+    def getInfobox(self):
+        return self.infobox
+
     def setId(self, id):
         self.id += id
 
@@ -146,4 +152,3 @@ if __name__ == '__main__':
     pagine = getParsedPage()
     print('Fine parsing')
     print(len(pagine))
-    # Mancano all'appello 14 dump. Ne abbiamo trovati 1177 invece di 1191
