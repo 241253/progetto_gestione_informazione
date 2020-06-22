@@ -1,5 +1,4 @@
 import xml.sax
-import bz2
 from os import listdir
 from os.path import isfile, join
 
@@ -131,8 +130,6 @@ class countHandler(xml.sax.handler.ContentHandler):
 
 def getParsedPage():
     parser = xml.sax.make_parser()
-    handler = countHandler()
-    parser.setContentHandler(handler)
 
     pagine = list()
     dumps = [f for f in listdir("dump") if isfile(join("dump", f))]
@@ -141,6 +138,8 @@ def getParsedPage():
         # for line in source_file:
         #     parser.feed(line.decode('utf-8'))
         # parser.parse('./wiki.xml')
+        handler = countHandler()
+        parser.setContentHandler(handler)
         parser.parse("dump/" + d)
         pagine.extend(handler.getPagine())
     return pagine
@@ -150,3 +149,5 @@ if __name__ == '__main__':
     print('Inizio parsing')
     pagine = getParsedPage()
     print('Fine parsing')
+    print(len(pagine))
+    # Mancano all'appello 14 dump. Ne abbiamo trovati 1177 invece di 1191

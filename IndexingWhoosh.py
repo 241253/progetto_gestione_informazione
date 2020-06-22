@@ -60,6 +60,7 @@ print('parsing dump wikipedia in corso...')
 pagine = xmlparserSAX.getParsedPage()
 print('Creazione dell\'indice id in corso...')
 for p in pagine:
+    print(p)
     writer_id.add_document(id=p.getId(), title=p.getTitolo())
     tokens = contentTokenization(p.getContenuto())
     for t in tokens:
