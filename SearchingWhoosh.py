@@ -1,11 +1,9 @@
 import webbrowser
 
-import numpy as np
 from whoosh import scoring
 import whoosh.index as index
 from whoosh.qparser import QueryParser
 from whoosh.qparser import MultifieldParser
-from sklearn.metrics import ndcg_score, average_precision_score
 from tkinter import *
 
 # LOGICA

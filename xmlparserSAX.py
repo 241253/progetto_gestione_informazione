@@ -86,8 +86,7 @@ class pagina:
 
         tempText = ''
         for line in text:
-            if line.__contains__('== References ==') or line.__contains__('== External links ==') or line[
-                                                                                                     :11] == '[[Category:':
+            if line.__contains__('== References ==') or line.__contains__('== External links ==') or line[:11] == '[[Category:':
                 break
             else:
                 line = line.replace("'", "")
@@ -145,10 +144,6 @@ def getParsedPage():
     pagine = list()
     dumps = [f for f in listdir("dump") if isfile(join("dump", f))]
     for d in dumps:
-        # source_file = bz2.BZ2File('test_enwiki-20200520-pages-articles-multistream1.xml-p1p30303.bz2', "r")
-        # for line in source_file:
-        #     parser.feed(line.decode('utf-8'))
-        # parser.parse('./wiki.xml')
         handler = countHandler()
         parser.setContentHandler(handler)
         parser.parse("dump/" + d)
