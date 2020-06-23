@@ -1,9 +1,11 @@
 import webbrowser
 
+import numpy as np
 from whoosh import scoring
 import whoosh.index as index
 from whoosh.qparser import QueryParser
 from whoosh.qparser import MultifieldParser
+from sklearn.metrics import ndcg_score, average_precision_score
 from tkinter import *
 
 # LOGICA
@@ -20,7 +22,7 @@ def callback(url):
 
 #algoritmo di ranking che usa whoosh
 wBM25 = scoring.BM25F(B=0.75, title_B=2.0, body_B=1.0, category_B=1.0, infobox_B=1.0, K1=1.5)
-mw = MultiWeighting(Frequency(), id=TF_IDF(), keys=wBM25)
+mw = MultiWeighting(TF_IDF(), id=wBM25, keys=Frequency())
 
 # Funzione di ricerca per termine (globale)
 def search_clicked():
@@ -38,9 +40,6 @@ def search_clicked():
         results = searcher.search(r, limit=30)
         # countUrl = 0
         for r in results:
-            if(r['title']=='Apple Inc.'):
-                print(r['body'])
-            # print(r['title'], r.score)
             url = 'en.wikipedia.org/wiki/' + str(r['title'])
             label_num = Label(window, text='0.')
             label_title = Label(window, text=r['title'])

@@ -134,9 +134,14 @@ class countHandler(xml.sax.handler.ContentHandler):
         return self.pagine
 
 
+def pagina_non_presente(pagine, titolo_pagina):
+    for p in pagine:
+        if(p.getTitolo() == titolo_pagina):
+            return False
+    return True
+
 def getParsedPage():
     parser = xml.sax.make_parser()
-
     pagine = list()
     dumps = [f for f in listdir("dump") if isfile(join("dump", f))]
     for d in dumps:
@@ -147,7 +152,8 @@ def getParsedPage():
         handler = countHandler()
         parser.setContentHandler(handler)
         parser.parse("dump/" + d)
-        pagine.extend(handler.getPagine())
+        if(len(handler.getPagine()) != 0 and pagina_non_presente(pagine, handler.getPagine()[0].getTitolo())):
+            pagine.extend(handler.getPagine())
     return pagine
 
 
