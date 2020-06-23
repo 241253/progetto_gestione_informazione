@@ -25,8 +25,6 @@ def get_results(search_key):
             if r['title'][:9] != 'Category:':
                 l.append(r['title'])
                 count += 1
-            else:
-                print(r['title'])
             if count == 10:
                 break
     return l
@@ -58,7 +56,7 @@ def manual_ndcg_evaluation():
     idcg = 6
     for i in range(2, len(true_relevance)):
         idcg += true_relevance[i] / log(i, 2)
-    print(idcg)
+    print('idcg value: ', idcg)
     media = 0
     for q in queries:
         ground_truth = []
@@ -77,8 +75,8 @@ def manual_ndcg_evaluation():
                 scores.append(0)
             point -= 1
         res = scores[0]
-        for i in range(2,len(scores)):
-            res += scores[i]/log(i, 2)
+        for i in range(1, len(scores)):
+            res += scores[i]/log(i+1, 2)
         res =res / idcg
         media += res
         print(q, ": ", res, scores)
@@ -87,10 +85,10 @@ def manual_ndcg_evaluation():
 if __name__ == '__main__':
     ix = index.open_dir("indexdir/index")
     wBM25 = scoring.BM25F(B=0.75, title_B=2.0, body_B=1.0, category_B=1.0, infobox_B=1.0, K1=1.5)
-    mw = MultiWeighting(TF_IDF(), id=wBM25, keys=Frequency())
+    mw = MultiWeighting(wBM25, id=wBM25, keys=Frequency())
 
-    # print('Risultati con SKLEARN:')
-    # sklearn_ndcg_evaluation()
+    print('Risultati con SKLEARN:')
+    sklearn_ndcg_evaluation()
 
     print('\nRisultati con ROBA MANUALE:')
     manual_ndcg_evaluation()
