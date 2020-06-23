@@ -21,9 +21,10 @@ queries = ["DNA", "Apple", "Epigenetics", "Hollywood", "Maya", "Microsoft", "Pre
 ix = index.open_dir("indexdir/index")
 wBM25 = scoring.BM25F(B=0.75, title_B=2.0, body_B=1.0, category_B=1.0, infobox_B=1.0, K1=1.5)
 mw = MultiWeighting(TF_IDF(), id=wBM25, keys=Frequency())
-q = MultifieldParser(['title', 'body', 'category', 'infobox'], schema=ix.schema)
+
 
 def get_results(search_key):
+    q = MultifieldParser(['title', 'body', 'category', 'infobox'], schema=ix.schema)
     r = q.parse(search_key)
     l = []
     with ix.searcher(weighting=mw) as searcher:
@@ -40,7 +41,7 @@ def get_results(search_key):
 true_relevance = np.asarray([[6, 5, 4, 3, 2, 1, 1, 1, 1, 1]])
 for q in queries:
     ground_truth = []
-    with open('/evaluation_files/'+q, 'r') as file:
+    with open('evaluation_files/'+q, 'r') as file:
         ground_truth = file.readlines()
     risultati = get_results(q)
     temp = []
