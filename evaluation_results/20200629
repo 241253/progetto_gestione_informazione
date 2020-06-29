@@ -1,0 +1,14 @@
+Prima evaluation senza ottimizzazioni/features (mancano anche tutte le ottimizzazioni di NLTK)
+
+schema = Schema(id=NUMERIC, title=TEXT(stored=True), body=TEXT(stored=True), category=TEXT(stored=True), infobox=TEXT(stored=True))
+MultifieldParser(['title', 'body', 'category', 'infobox'], schema=ix.schema)
+
+NDCG EVALUATION con BM25:
+MEDIA:  0.5702046335648207
+NDCG EVALUATION con TF_IDF:
+MEDIA:  0.5985112462337754
+
+MAP EVALUATION con BM25
+MEDIA:  0.24087698412698408
+MAP EVALUATION con TF_IDF
+MEDIA:  0.28041005291005283
