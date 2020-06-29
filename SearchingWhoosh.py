@@ -32,7 +32,7 @@ def search_clicked():
         item[2].destroy()
     displayed_results = list()
 
-    q = MultifieldParser(['title', 'body', 'category', 'infobox'], schema=ix.schema)
+    q = MultifieldParser(['title', 'body', 'category', 'infobox', 'paragraphTitle'], schema=ix.schema)
     r = q.parse(txt.get())
     with ix.searcher(weighting=mw) as searcher:
         results = searcher.search(r, limit=30)

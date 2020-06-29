@@ -1,11 +1,7 @@
 from math import log
-
-import numpy as np
-from sklearn.metrics import average_precision_score, ndcg_score
-
 from whoosh import scoring, index
 from whoosh.qparser import MultifieldParser
-from whoosh.scoring import MultiWeighting, TF_IDF, Frequency
+from whoosh.scoring import TF_IDF
 
 queries = ["DNA", "Apple", "Epigenetics", "Hollywood", "Maya", "Microsoft", "Precision", "Tuscany",
 "99 balloons", "Computer Programming", "Financial meltdown", "Justin Timberlake",
@@ -15,13 +11,14 @@ queries = ["DNA", "Apple", "Epigenetics", "Hollywood", "Maya", "Microsoft", "Pre
 "Read the manual", "Spanish Civil War", "Do geese see god", "Much ado about nothing"]
 
 def get_results(search_key, weighting):
-    q = MultifieldParser(['title', 'body', 'category', 'infobox'], schema=ix.schema)
+    q = MultifieldParser(['title', 'body', 'category', 'infobox', 'paragraphTitle'], schema=ix.schema)
     r = q.parse(search_key)
     l = []
     with ix.searcher(weighting=weighting) as searcher:
         results = searcher.search(r, limit=20)
         count = 0
         for r in results:
+            # print(r['infobox'])
             if r['title'][:9] != 'Category:':
                 l.append(r['title'])
                 count += 1
@@ -29,27 +26,6 @@ def get_results(search_key, weighting):
                 break
     return l
 
-# def sklearn_ndcg_evaluation():
-#     true_relevance = np.asarray([[6, 5, 4, 3, 2, 1, 1, 1, 1, 1]])
-#     media = 0
-#     for q in queries:
-#         ground_truth = []
-#         with open('evaluation_files/'+q, 'r') as file:
-#             ground_truth = file.readlines()
-#         risultati = get_results(q)
-#         temp = []
-#         point = 6
-#         for r in risultati:
-#             if r in ground_truth:
-#                 temp.append(point if point > 0 else 1)
-#             else:
-#                 temp.append(0)
-#             point -= 1
-#         scores = np.asarray([temp])
-#         res = ndcg_score(true_relevance, scores)
-#         media += res
-#         print(q, ": ", res, scores)
-#     print('MEDIA: ', media/30)
 
 def ndcg_evaluation(weighting):
     true_relevance = [6, 5, 4, 3, 2, 1, 1, 1, 1, 1]
@@ -65,8 +41,6 @@ def ndcg_evaluation(weighting):
         risultati = get_results(q, weighting)
         scores = []
         point = 6
-        # print(risultati)
-        # print(ground_truth)
         for r in risultati:
             if r in ground_truth:
                 scores.append(point if point > 0 else 1)
@@ -105,17 +79,15 @@ def map_evaluation(weighting):
 
 if __name__ == '__main__':
     ix = index.open_dir("indexdir/index")
-    wBM25 = scoring.BM25F(B=0.75, title_B=2.0, body_B=1.0, category_B=1.0, infobox_B=1.0, K1=1.5)
+    wBM25 = scoring.BM25F(B=0.75, title_B=2.0, paragraphTitle=1.25, body_B=1.0, category_B=0.75, infobox_B=0.75, K1=1.5)
     wtf = TF_IDF()
-
-    # COMMENTO
 
     print("NDCG EVALUATION con BM25:")
     ndcg_evaluation(wBM25)
     print("NDCG EVALUATION con TF_IDF:")
     ndcg_evaluation(wtf)
 
-    print("\n\n")
+    print("\n")
 
     print("MAP EVALUATION con BM25")
     map_evaluation(wBM25)

@@ -10,6 +10,8 @@ class pagina:
         self.infobox = ''
         self.contenuto = ''
         self.categoria = list()
+        self.titoliParagrafi = list()
+
 
     def setTitolo(self, titolo):
         self.titolo = self.titolo + titolo
@@ -19,6 +21,9 @@ class pagina:
 
     def setContenuto(self, contenuto):
         self.contenuto = self.contenuto + "\n" + contenuto
+
+    def setId(self, id):
+        self.id += id
 
     def getURL(self):
         return 'https://en.wikipedia.org/wiki/' + self.getTitolo()
@@ -38,16 +43,16 @@ class pagina:
     def getInfobox(self):
         return self.infobox
 
-    def setId(self, id):
-        self.id += id
+    def getTitoliParagrafi(self):
+        return '\n'.join(self.titoliParagrafi)
 
     def extractInformation(self):
-        # estrae infobox
+        # Estrae infobox
         self._extractInfobox(self.getContenuto().split('\n'))
-        # estrae categorie
+        # Estrae categorie
         self._extractCategory(self.getContenuto().split('\n'))
-        # Potrebbe servire in futuro per elaboreare il contenuto che è rimasto
-        # self._extractContent(self.getContenuto().split('\n'))
+        # Estrae titoli dei paragrafi
+        self._extractParagraphTitle(self.getContenuto().split('\n'))
 
     def _extractInfobox(self, text):
         count = 1
@@ -70,8 +75,17 @@ class pagina:
                 if (count == 0):
                     indexEnd = i
                     break
+                # if text[i] != 'br':
                 tempInfoBox += "\n" + text[i]
             i += 1
+        # tempInfoBox = tempInfoBox.replace('[', '')
+        # tempInfoBox = tempInfoBox.replace('{', '')
+        # tempInfoBox = tempInfoBox.replace(']', '')
+        # tempInfoBox = tempInfoBox.replace('}', '')
+        # tempInfoBox = tempInfoBox.replace('>', '')
+        # tempInfoBox = tempInfoBox.replace('<', '')
+        # tempInfoBox = tempInfoBox.replace('|', '')
+
         self.setInfobox(tempInfoBox)
         self.contenuto = '\n'.join(text[:indexStart]) + '\n' + '\n'.join(text[(indexEnd + 1):])
 
@@ -94,6 +108,13 @@ class pagina:
                 line = line.replace("`", "")
                 tempText += line + '\n'
         self.contenuto = tempText
+
+    def _extractParagraphTitle(self, text):
+        for line in text:
+            if line[0:2] == '==' and line[-2:] == '==':
+                self.titoliParagrafi.append(line.replace('=', ''))
+
+
 
     def __str__(self):
         return f'ID:{self.id}\nTitolo:{self.titolo.encode("utf-8")}\nContenuto:{self.contenuto.encode("utf-8")}\n'
@@ -157,3 +178,4 @@ if __name__ == '__main__':
     pagine = getParsedPage()
     print('Fine parsing')
     print(len(pagine))
+    print(pagine[3].getInfobox())

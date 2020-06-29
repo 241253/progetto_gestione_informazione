@@ -26,7 +26,7 @@ def contentTokenization(contenuto):
 
 
 # CREO IL NUOVO INDICE DI PROVA
-schema = Schema(id=NUMERIC, title=TEXT(stored=True), body=TEXT(stored=True), category=TEXT(stored=True), infobox=TEXT(stored=True))
+schema = Schema(id=NUMERIC, title=TEXT(stored=True), body=TEXT(stored=True), paragraphTitle=TEXT(stored=True), category=TEXT(stored=True), infobox=TEXT(stored=True))
 # CREO L'INDICE
 if not os.path.exists("indexdir/index"):
     os.mkdir("indexdir/index")
@@ -41,6 +41,6 @@ print('parsing dump wikipedia terminato\n')
 
 print('Creazione dell\'indice in corso...')
 for p in pagine:
-    writer.add_document(id=p.getId(), title=p.getTitolo(), body=p.getContenuto(), category=p.getCategoria(), infobox=p.getInfobox())
+    writer.add_document(id=p.getId(), title=' '.join(contentTokenization(p.getTitolo())), body=' '.join(contentTokenization(p.getContenuto())), paragraphTitle=' '.join(contentTokenization(p.getTitoliParagrafi())), category=' '.join(contentTokenization(p.getCategoria())), infobox=' '.join(contentTokenization(p.getInfobox())))
 writer.commit()
 print('Fine creazione dell\'indice\n')
