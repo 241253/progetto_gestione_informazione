@@ -29,29 +29,29 @@ def get_results(search_key):
                 break
     return l
 
-def sklearn_ndcg_evaluation():
-    true_relevance = np.asarray([[6, 5, 4, 3, 2, 1, 1, 1, 1, 1]])
-    media = 0
-    for q in queries:
-        ground_truth = []
-        with open('evaluation_files/'+q, 'r') as file:
-            ground_truth = file.readlines()
-        risultati = get_results(q)
-        temp = []
-        point = 6
-        for r in risultati:
-            if r in ground_truth:
-                temp.append(point if point > 0 else 1)
-            else:
-                temp.append(0)
-            point -= 1
-        scores = np.asarray([temp])
-        res = ndcg_score(true_relevance, scores)
-        media += res
-        print(q, ": ", res, scores)
-    print('MEDIA: ', media/30)
+# def sklearn_ndcg_evaluation():
+#     true_relevance = np.asarray([[6, 5, 4, 3, 2, 1, 1, 1, 1, 1]])
+#     media = 0
+#     for q in queries:
+#         ground_truth = []
+#         with open('evaluation_files/'+q, 'r') as file:
+#             ground_truth = file.readlines()
+#         risultati = get_results(q)
+#         temp = []
+#         point = 6
+#         for r in risultati:
+#             if r in ground_truth:
+#                 temp.append(point if point > 0 else 1)
+#             else:
+#                 temp.append(0)
+#             point -= 1
+#         scores = np.asarray([temp])
+#         res = ndcg_score(true_relevance, scores)
+#         media += res
+#         print(q, ": ", res, scores)
+#     print('MEDIA: ', media/30)
 
-def manual_ndcg_evaluation():
+def ndcg_evaluation():
     true_relevance = [6, 5, 4, 3, 2, 1, 1, 1, 1, 1]
     idcg = 6
     for i in range(2, len(true_relevance)):
@@ -82,13 +82,37 @@ def manual_ndcg_evaluation():
         print(q, ": ", res, scores)
     print('MEDIA: ', media/30)
 
+def map_evaluation():
+    for q in queries:
+        ground_truth = []
+        with open('evaluation_files/'+q, 'r') as file:
+            ground_truth = file.readlines()
+        ground_truth = [x[:-1] for x in ground_truth]
+        risultati = get_results(q)
+        precision = []
+        countRilevanti = 0
+        sumAveragePrecision = 0.0
+        sumMeanAveragePrecision = 0.0
+        for i in range(len(risultati)):
+            if risultati[i] in ground_truth:
+                countRilevanti += 1
+                sumAveragePrecision += countRilevanti / (i+1)
+            precision.append(countRilevanti / (i+1))
+
+        sumMeanAveragePrecision += sumAveragePrecision / len(ground_truth)
+        print(q, ":", precision)
+
+    print('MEDIA: ', sumMeanAveragePrecision / 30)
+    return sumMeanAveragePrecision / 30
+
 if __name__ == '__main__':
     ix = index.open_dir("indexdir/index")
     wBM25 = scoring.BM25F(B=0.75, title_B=2.0, body_B=1.0, category_B=1.0, infobox_B=1.0, K1=1.5)
     mw = MultiWeighting(wBM25, id=wBM25, keys=Frequency())
 
-    print('Risultati con SKLEARN:')
-    sklearn_ndcg_evaluation()
+    print("NDCG EVALUATION:")
+    ndcg_evaluation()
 
-    print('\nRisultati con ROBA MANUALE:')
-    manual_ndcg_evaluation()
+    print("\nMAP EVALUATION")
+    map_evaluation()
+
