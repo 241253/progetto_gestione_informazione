@@ -110,6 +110,8 @@ if __name__ == '__main__':
     wBM25 = scoring.BM25F(B=0.75, title_B=2.0, body_B=1.0, category_B=1.0, infobox_B=1.0, K1=1.5)
     mw = MultiWeighting(wBM25, id=wBM25, keys=Frequency())
 
+    # COMMENTO
+
     print("NDCG EVALUATION:")
     ndcg_evaluation()
 
