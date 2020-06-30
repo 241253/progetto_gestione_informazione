@@ -1,4 +1,8 @@
+import string
 from math import log
+
+import nltk
+from nltk.corpus import stopwords
 from whoosh import scoring, index
 from whoosh.qparser import MultifieldParser
 from whoosh.scoring import TF_IDF
@@ -10,9 +14,28 @@ queries = ["DNA", "Apple", "Epigenetics", "Hollywood", "Maya", "Microsoft", "Pre
 "Eye of Horus", "Madam I'm Adam", "Mean Average Precision", "Physics Nobel Prizes",
 "Read the manual", "Spanish Civil War", "Do geese see god", "Much ado about nothing"]
 
+
+def tokensCleaner(tokens):
+    # processo di lemmatizzazione e stemmatizzazione
+    wnl = nltk.WordNetLemmatizer()
+    porter = nltk.PorterStemmer()
+    exclude = set(string.punctuation)
+    # rimozione stopwords e punteggiature
+    stopwordsToken = [x for x in tokens if x not in stopwords.words('english')]
+    # stopwordsToken = [porter.stem(wnl.lemmatize(x)) for x in tokens if x not in stopwords.words('english')]
+    return [x for x in stopwordsToken if x not in exclude]
+
+
+def contentTokenization(contenuto):
+    tokens = nltk.word_tokenize(contenuto)
+    tokens = tokensCleaner(tokens)
+    return tokens
+
 def get_results(search_key, weighting):
     q = MultifieldParser(['title', 'body', 'category', 'infobox', 'paragraphTitle'], schema=ix.schema)
-    r = q.parse(search_key)
+
+
+    r = q.parse(' '.join(contentTokenization(search_key)))
     l = []
     with ix.searcher(weighting=weighting) as searcher:
         results = searcher.search(r, limit=20)
