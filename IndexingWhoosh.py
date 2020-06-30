@@ -6,7 +6,8 @@ import xmlparserSAX
 from preProcessing import preProcess
 
 # CREO IL NUOVO INDICE DI PROVA
-schema = Schema(id=NUMERIC, title=TEXT(stored=True), body=TEXT(stored=True), paragraphTitle=TEXT(stored=True), category=TEXT(stored=True), infobox=TEXT(stored=True))
+# schema = Schema(id=NUMERIC, title=TEXT(stored=True), body=TEXT(stored=True), paragraphTitle=TEXT(stored=True), category=TEXT(stored=True), infobox=TEXT(stored=True))
+schema = Schema(id=NUMERIC, title=TEXT(stored=True), body=TEXT(stored=True))
 
 # CREO L'INDICE
 if not os.path.exists("indexdir/index"):
@@ -23,6 +24,7 @@ print('Creazione dell\'indice in corso...')
 for p in pagine:
     # per usare il preprocessing scommentare la riga sottostante e commentare quella successiva
     # writer.add_document(id=p.getId(), title=preProcess(p.getTitolo()), body=preProcess(p.getContenuto()), paragraphTitle=preProcess(p.getTitoliParagrafi()), category=preProcess(p.getCategoria()), infobox=preProcess(p.getInfobox()))
-    writer.add_document(id=p.getId(), title=p.getTitolo(), body=p.getContenuto(), paragraphTitle=p.getTitoliParagrafi(), category=p.getCategoria(), infobox=p.getInfobox())
+    # writer.add_document(id=p.getId(), title=p.getTitolo(), body=p.getContenuto(), paragraphTitle=p.getTitoliParagrafi(), category=p.getCategoria(), infobox=p.getInfobox())
+    writer.add_document(id=p.getId(), title=p.getTitolo(), body=p.getContenuto())
 writer.commit()
 print('Fine creazione dell\'indice\n')

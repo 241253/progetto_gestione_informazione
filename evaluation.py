@@ -14,7 +14,8 @@ queries = ["DNA", "Apple", "Epigenetics", "Hollywood", "Maya", "Microsoft", "Pre
 "Read the manual", "Spanish Civil War", "Do geese see god", "Much ado about nothing"]
 
 def get_results(search_key, weighting):
-    q = MultifieldParser(['title', 'body', 'category', 'infobox', 'paragraphTitle'], schema=ix.schema)
+    # q = MultifieldParser(['title', 'body', 'category', 'infobox', 'paragraphTitle'], schema=ix.schema)
+    q = MultifieldParser(['title', 'body'], schema=ix.schema)
 
     r = q.parse(search_key)
     l = []
@@ -76,6 +77,7 @@ def map_evaluation(weighting):
                 sumAveragePrecision += countRilevanti / (i+1)
             precision.append(countRilevanti / (i+1))
 
+        # sumMeanAveragePrecision += sumAveragePrecision / countRilevanti if countRilevanti != 0 else 0
         sumMeanAveragePrecision += sumAveragePrecision / len(ground_truth)
         # print(q, ":", sumAveragePrecision / len(ground_truth), precision)
 
@@ -83,7 +85,8 @@ def map_evaluation(weighting):
 
 if __name__ == '__main__':
     ix = index.open_dir("indexdir/index")
-    wBM25 = scoring.BM25F(B=0.75, title_B=2, paragraphTitle=1.5, body_B=1.25, category_B=0.5, infobox_B=0.75, K1=1.5)
+    # wBM25 = scoring.BM25F(B=0.75, title_B=2, paragraphTitle=1.5, body_B=1.25, category_B=0.5, infobox_B=0.75, K1=1.5)
+    wBM25 = scoring.BM25F(B=0.75, K1=1.5)
     wtf = TF_IDF()
 
     print("NDCG EVALUATION con BM25:")

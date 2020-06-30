@@ -47,12 +47,13 @@ class pagina:
         return '\n'.join(self.titoliParagrafi)
 
     def extractInformation(self):
-        # Estrae infobox
-        self._extractInfobox(self.getContenuto().split('\n'))
-        # Estrae categorie
-        self._extractCategory(self.getContenuto().split('\n'))
-        # Estrae titoli dei paragrafi
-        self._extractParagraphTitle(self.getContenuto().split('\n'))
+        # # Estrae infobox
+        # self._extractInfobox(self.getContenuto().split('\n'))
+        # # Estrae categorie
+        # self._extractCategory(self.getContenuto().split('\n'))
+        # # Estrae titoli dei paragrafi
+        # self._extractParagraphTitle(self.getContenuto().split('\n'))
+        pass
 
     def _extractInfobox(self, text):
         count = 1
