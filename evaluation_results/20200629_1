@@ -3,6 +3,20 @@ Ricerca solo su titolo e corpo della pagina
 (BASE DI PARTENZA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!)
 
 NDCG EVALUATION con BM25:
+MEDIA:  0.7303243543711545
+NDCG EVALUATION con TF_IDF:
+MEDIA:  0.6451423735327732
+
+MAP EVALUATION con BM25
+MEDIA:  0.3341587301587302
+MAP EVALUATION con TF_IDF
+MEDIA:  0.2911574074074074
+
+------------------------------------------------------------------------------------------------------------------------
+aggiunta di peso su title e body
+title_B=2.0, body_B=1.0
+
+NDCG EVALUATION con BM25:
 MEDIA:  0.6079750279353845
 NDCG EVALUATION con TF_IDF:
 MEDIA:  0.6451018976847855

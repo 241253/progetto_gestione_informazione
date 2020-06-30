@@ -1,7 +1,8 @@
 import string
 
 import nltk
-from nltk.corpus import stopwords
+from nltk.corpus import stopwords, wordnet
+
 
 def preProcess(contenuto, isString=True):
     tokens = tokenize(contenuto)
@@ -28,3 +29,17 @@ def removePunctuation(tokens):
 
 def removeStopWords(tokens):
     return [x for x in tokens if x not in stopwords.words('english')]
+
+def queryExpansion(query):
+    finalQuery = []
+    count = 0
+    for word in query.split(' '):
+        finalQuery.append(word)
+        for synonyms in wordnet.synsets(word):
+            for synonym in synonyms.lemmas():
+                if count < 3:
+                    if synonym.name() not in finalQuery:
+                        finalQuery.append(synonym.name())
+                        count += 1
+        count = 0
+    return ' '.join(finalQuery)
