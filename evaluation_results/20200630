@@ -40,18 +40,18 @@ MAP EVALUATION con TF_IDF
 MEDIA:  0.1344616402116402
 
 ------------------------------------------------------------------------------------------------------------------------
-NLTK: solo lemmatizzazione
+NLTK: solo lemmatizzazione (MEGLIO NON USARLO)
 
 NDCG EVALUATION con BM25:
-MEDIA:  0.46805648894722895
+MEDIA:  0.5139476519881024
 NDCG EVALUATION con TF_IDF:
-MEDIA:  0.4552967041016692
+MEDIA:  0.4247807222606397
 
 
 MAP EVALUATION con BM25
-MEDIA:  0.17668650793650797
+MEDIA:  0.1948888888888889
 MAP EVALUATION con TF_IDF
-MEDIA:  0.18903042328042333
+MEDIA:  0.1665
 
 ------------------------------------------------------------------------------------------------------------------------
 NLTK: solo stemming
