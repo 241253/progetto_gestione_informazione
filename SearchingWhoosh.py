@@ -39,6 +39,7 @@ def search_clicked():
     search_keyword = queryExpansion(txt.get().lower())
     print(search_keyword)
     r = q.parse(search_keyword)
+
     with ix.searcher(weighting=mw) as searcher:
         results = searcher.search(r, limit=30)
         # countUrl = 0

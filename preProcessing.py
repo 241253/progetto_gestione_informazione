@@ -39,7 +39,7 @@ def queryExpansion(query):
             for synonym in synonyms.lemmas():
                 if count < 3:
                     if synonym.name() not in finalQuery:
-                        finalQuery.append(synonym.name())
+                        finalQuery.append(synonym.name().replace("_", " ").lower())
                         count += 1
         count = 0
     return ' '.join(finalQuery)
