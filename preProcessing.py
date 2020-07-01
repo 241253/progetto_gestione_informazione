@@ -6,7 +6,8 @@ from nltk.corpus import stopwords, wordnet
 
 def preProcess(contenuto, isString=True):
     tokens = tokenize(contenuto)
-    tokens = removePunctuation(tokens)
+    tokens = stem(tokens)
+    # tokens = removePunctuation(tokens)
     if(isString):
         return ' '.join(tokens)
     else:

@@ -12,7 +12,7 @@ MAP EVALUATION con TF_IDF
 MEDIA:  0.1344616402116402
 
 ------------------------------------------------------------------------------------------------------------------------
-NLTK: rimozione della punteggiatura
+NLTK: rimozione della punteggiatura (MIGLIORAMENTO)
 
 NDCG EVALUATION con BM25:
 MEDIA:  0.5881783688719419
@@ -40,7 +40,7 @@ MAP EVALUATION con TF_IDF
 MEDIA:  0.1344616402116402
 
 ------------------------------------------------------------------------------------------------------------------------
-NLTK: solo lemmatizzazione (MEGLIO NON USARLO)
+NLTK: solo lemmatizzazione (PEGGIORAMENTO)
 
 NDCG EVALUATION con BM25:
 MEDIA:  0.5139476519881024
@@ -54,15 +54,15 @@ MAP EVALUATION con TF_IDF
 MEDIA:  0.1665
 
 ------------------------------------------------------------------------------------------------------------------------
-NLTK: solo stemming
+NLTK: solo stemming (PEGGIORAMENTO)
 
 NDCG EVALUATION con BM25:
-MEDIA:  0.0
+MEDIA:  0.12445046680523865
 NDCG EVALUATION con TF_IDF:
-MEDIA:  0.0007145949267745465
+MEDIA:  0.08148901840174766
 
 
 MAP EVALUATION con BM25
-MEDIA:  0.0
+MEDIA:  0.03668253968253968
 MAP EVALUATION con TF_IDF
-MEDIA:  0.00037037037037037035
+MEDIA:  0.020562169312169313
