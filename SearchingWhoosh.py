@@ -36,7 +36,8 @@ def search_clicked():
     displayed_results = list()
 
     q = MultifieldParser(['title', 'body'], schema=ix.schema)
-    search_keyword = queryExpansion(txt.get().lower())
+    search_keyword = txt.get().lower()
+    search_keyword = queryExpansion(search_keyword)
     print(search_keyword)
     r = q.parse(search_keyword)
 
