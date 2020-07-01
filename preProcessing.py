@@ -41,4 +41,5 @@ def queryExpansion(query):
                         finalQuery.append(syn)
                         count += 1
         count = 0
-    return '(' + query + ') OR ' + ' OR '.join(finalQuery)
+        query = ' '.join([q+'^2.0' for q in query.split()])
+    return '(' + query + ') OR ' + ' OR '.join(['(' + fq[1:-1] + '^0.5)' for fq in finalQuery])
