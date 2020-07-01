@@ -1,4 +1,6 @@
 import matplotlib.pyplot as plt
+import numpy as np
+
 
 def MAP_graphic(x, y, weighting_alg='BM25'):
     plt.plot(x, y, 'b-')
@@ -7,15 +9,11 @@ def MAP_graphic(x, y, weighting_alg='BM25'):
     plt.ylabel('Precision')
     plt.show()
 
-def NDCG_graphic(x, weighting_alg='BM25'):
-    fig, ax = plt.subplots()  # creiamo Figure and Axes in un comando solo
-
-    # aggiungiamo l'istogramma
-    # in questo caso hist ritorna tre valori che mettiamo in altrettante variabili
-    n, bins, columns = ax.hist(x, 30, rwidth=0.5)
-
-    ax.set_xlabel('ma io ')
-    ax.set_ylabel('che cazzo ne so')
-    ax.set_title('NDCG with ' + weighting_alg)
-    fig.tight_layout()
+def NDCG_graphic(y, weighting_alg='BM25'):
+    bars = 30
+    x_pos = np.arange(30)
+    plt.bar(x_pos, y)
+    plt.xlabel('Queries')
+    plt.title('NDCG with ' + weighting_alg)
+    plt.tight_layout()
     plt.show()

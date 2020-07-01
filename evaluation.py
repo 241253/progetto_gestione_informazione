@@ -25,7 +25,7 @@ def get_results(search_key, weighting):
     q = MultifieldParser(['title', 'body'], schema=ix.schema)
 
     # search_key = queryExpansion(preProcess(search_key.lower()))
-    r = q.parse(queryExpansion(search_key.lower()))
+    r = q.parse(search_key.lower())
     l = []
     with ix.searcher(weighting=weighting) as searcher:
         results = searcher.search(r, limit=20)
@@ -43,8 +43,8 @@ def ndcg_evaluation(weighting):
     x = []
     true_relevance = [6, 5, 4, 3, 2, 1, 1, 1, 1, 1]
     idcg = 6
-    for i in range(2, len(true_relevance)):
-        idcg += true_relevance[i] / log(i, 2)
+    for i in range(1, len(true_relevance)):
+        idcg += true_relevance[i] / log(i+1, 2)
     media = 0
     for q in queries:
         ground_truth = get_ground_truth(q)
@@ -63,7 +63,7 @@ def ndcg_evaluation(weighting):
                 res += scores[i]/log(i+1, 2)
             res = res / idcg
         else:
-            res = 0
+            res = 0.0
         media += res
         # print(q, ": ", res, scores)
         x.append(res)
@@ -89,12 +89,9 @@ def map_evaluation(weighting):
         # sumMeanAveragePrecision += sumAveragePrecision / countRilevanti if countRilevanti != 0 else 0
         sumMeanAveragePrecision += sumAveragePrecision / len(ground_truth)
         # print(q, ":", sumAveragePrecision / len(ground_truth), precision)
-        # print(q, ':', precision)
-        # print(x)
-        # input()
 
     print('MEDIA: ', sumMeanAveragePrecision / 30)
-    return [i/10 for i in x]
+    return [i/30 for i in x]
 
 if __name__ == '__main__':
     ix = index.open_dir("indexdir/index")
@@ -103,13 +100,11 @@ if __name__ == '__main__':
     wtf = TF_IDF()
 
     print("NDCG EVALUATION con BM25:")
-    x = ndcg_evaluation(wBM25)
-    print(x)
-    NDCG_graphic(x)
+    y = ndcg_evaluation(wBM25)
+    NDCG_graphic(y)
     print("NDCG EVALUATION con TF_IDF:")
-    x = ndcg_evaluation(wtf)
-    print(x)
-    NDCG_graphic(x, 'TF_IDF')
+    y = ndcg_evaluation(wtf)
+    NDCG_graphic(y, 'TF_IDF')
 
     print("\n")
 
