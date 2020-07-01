@@ -46,16 +46,19 @@ def ndcg_evaluation(weighting):
         risultati = get_results(q, weighting)
         scores = []
         point = 6
-        for r in risultati:
-            if r in ground_truth:
-                scores.append(point if point > 0 else 1)
-            else:
-                scores.append(0)
-            point -= 1
-        res = scores[0]
-        for i in range(1, len(scores)):
-            res += scores[i]/log(i+1, 2)
-        res = res / idcg
+        if len(risultati) != 0:
+            for r in risultati:
+                if r in ground_truth:
+                    scores.append(point if point > 0 else 1)
+                else:
+                    scores.append(0)
+                point -= 1
+            res = scores[0]
+            for i in range(1, len(scores)):
+                res += scores[i]/log(i+1, 2)
+            res = res / idcg
+        else:
+            res = 0
         media += res
         # print(q, ": ", res, scores)
     print('MEDIA: ', media/30)

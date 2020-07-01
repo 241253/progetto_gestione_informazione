@@ -31,15 +31,17 @@ def removeStopWords(tokens):
     return [x for x in tokens if x not in stopwords.words('english')]
 
 def queryExpansion(query):
+
     finalQuery = []
     count = 0
-    for word in query.split(' '):
+    for word in removeStopWords(removePunctuation(tokenize(query))):
         finalQuery.append(word)
         for synonyms in wordnet.synsets(word):
             for synonym in synonyms.lemmas():
                 if count < 3:
-                    if synonym.name() not in finalQuery:
-                        finalQuery.append(synonym.name().replace("_", " ").lower())
+                    syn = synonym.name().replace("_", " ").lower()
+                    if syn not in finalQuery:
+                        finalQuery.append(syn)
                         count += 1
         count = 0
     return ' '.join(finalQuery)
