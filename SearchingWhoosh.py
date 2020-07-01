@@ -1,15 +1,9 @@
 import webbrowser
-
 from whoosh import scoring
 import whoosh.index as index
-from whoosh.qparser import QueryParser
 from whoosh.qparser import MultifieldParser
 from tkinter import *
-
-# LOGICA
-# Lista componenti grafici dei risultati
-from whoosh.scoring import MultiWeighting, TF_IDF, Frequency
-
+from whoosh.scoring import TF_IDF
 from preProcessing import queryExpansion
 
 displayed_results = list()
@@ -36,11 +30,9 @@ def search_clicked():
     displayed_results = list()
 
     q = MultifieldParser(['title', 'body'], schema=ix.schema)
-    search_keyword = txt.get().lower()
+    search_keyword = txt.get()
     search_keyword = queryExpansion(search_keyword)
-    print(search_keyword)
     r = q.parse(search_keyword)
-
     with ix.searcher(weighting=mw) as searcher:
         results = searcher.search(r, limit=30)
         # countUrl = 0

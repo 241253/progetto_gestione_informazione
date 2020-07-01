@@ -1,10 +1,8 @@
 from math import log
-
 from whoosh import scoring, index
 from whoosh.qparser import MultifieldParser
 from whoosh.scoring import TF_IDF
-
-from preProcessing import preProcess, queryExpansion
+from preProcessing import queryExpansion, preProcess
 
 queries = ["DNA", "Apple", "Epigenetics", "Hollywood", "Maya", "Microsoft", "Precision", "Tuscany",
 "99 balloons", "Computer Programming", "Financial meltdown", "Justin Timberlake",
@@ -24,13 +22,13 @@ def get_results(search_key, weighting):
     # q = MultifieldParser(['title', 'body', 'category', 'infobox', 'paragraphTitle'], schema=ix.schema)
     q = MultifieldParser(['title', 'body'], schema=ix.schema)
 
-    r = q.parse(preProcess(search_key))
+    search_key = preProcess(search_key)
+    r = q.parse(search_key)
     l = []
     with ix.searcher(weighting=weighting) as searcher:
         results = searcher.search(r, limit=20, )
         count = 0
         for r in results:
-            # print(r['infobox'])
             if r['title'][:9] != 'Category:':
                 l.append(r['title'])
                 count += 1

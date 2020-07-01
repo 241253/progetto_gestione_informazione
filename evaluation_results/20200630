@@ -1,15 +1,14 @@
-NLTK: rimozione delle stopwords
+NLTK: rimozione delle stopwords (PEGGIORAMENTO)
 
 NDCG EVALUATION con BM25:
-MEDIA:  0.40330304819110585
+MEDIA:  0.42736371611748264
 NDCG EVALUATION con TF_IDF:
-MEDIA:  0.3659854251694955
-
+MEDIA:  0.38927311702703987
 
 MAP EVALUATION con BM25
-MEDIA:  0.13486375661375663
+MEDIA:  0.14925
 MAP EVALUATION con TF_IDF
-MEDIA:  0.1344616402116402
+MEDIA:  0.13660978835978838
 
 ------------------------------------------------------------------------------------------------------------------------
 NLTK: rimozione della punteggiatura (MIGLIORAMENTO)
