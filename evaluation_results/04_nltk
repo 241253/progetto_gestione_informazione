@@ -38,7 +38,6 @@ MEDIA:  0.5631026002140246
 NDCG EVALUATION con TF_IDF:
 MEDIA:  0.5034526810226081
 
-
 MAP EVALUATION con BM25
 MEDIA:  0.599654761904762
 MAP EVALUATION con TF_IDF
@@ -60,7 +59,6 @@ NDCG EVALUATION con BM25:
 MEDIA:  0.5758314459731214
 NDCG EVALUATION con TF_IDF:
 MEDIA:  0.5034526810226081
-
 
 MAP EVALUATION con BM25
 MEDIA:  0.6076812169312169
@@ -84,7 +82,6 @@ MEDIA:  0.5640065495511134
 NDCG EVALUATION con TF_IDF:
 MEDIA:  0.48721782956133436
 
-
 MAP EVALUATION con BM25
 MEDIA:  0.6038690476190477
 MAP EVALUATION con TF_IDF
@@ -107,9 +104,74 @@ MEDIA:  0.5611213281627907
 NDCG EVALUATION con TF_IDF:
 MEDIA:  0.4755645974431945
 
-
 MAP EVALUATION con BM25
 MEDIA:  0.6053505291005291
 MAP EVALUATION con TF_IDF
 MEDIA:  0.49979497354497354
+------------------------------------------------------------------------------------------------------------------------
+
+preprocessing --> removePunctuacion + remove Stopwords + lem
+/***********************************************************************************************************************
+
+    wBM25 = scoring.BM25F(B=0.75, title_B=1.0, body_B=0.5, K1=2)
+    wtf = TF_IDF()
+    q = MultifieldParser(['title', 'body'], schema=ix.schema)
+    schema = Schema(id=NUMERIC, title=TEXT(stored=True), body=TEXT(stored=True))
+    writer.add_document(id=p.getId(), title=preProcess(p.getTitolo().lower()), body=preProcess(p.getContenuto().lower()))
+
+***********************************************************************************************************************/
+
+NDCG EVALUATION con BM25:
+MEDIA:  0.5735339500232608
+NDCG EVALUATION con TF_IDF:
+MEDIA:  0.4891946509982011
+
+MAP EVALUATION con BM25
+MEDIA:  0.619871693121693
+MAP EVALUATION con TF_IDF
+MEDIA:  0.5056587301587301
+------------------------------------------------------------------------------------------------------------------------
+
+preprocessing --> removePunctuacion + remove Stopwords + stem
+/***********************************************************************************************************************
+
+    wBM25 = scoring.BM25F(B=0.75, title_B=1.0, body_B=0.5, K1=2)
+    wtf = TF_IDF()
+    q = MultifieldParser(['title', 'body'], schema=ix.schema)
+    schema = Schema(id=NUMERIC, title=TEXT(stored=True), body=TEXT(stored=True))
+    writer.add_document(id=p.getId(), title=preProcess(p.getTitolo().lower()), body=preProcess(p.getContenuto().lower()))
+
+***********************************************************************************************************************/
+
+NDCG EVALUATION con BM25:
+MEDIA:  0.5692625278637198
+NDCG EVALUATION con TF_IDF:
+MEDIA:  0.47676103840620854
+
+MAP EVALUATION con BM25
+MEDIA:  0.6161957671957671
+MAP EVALUATION con TF_IDF
+MEDIA:  0.5004986772486772
+------------------------------------------------------------------------------------------------------------------------
+
+preprocessing --> removePunctuacion + remove Stopwords + stem + lem
+/***********************************************************************************************************************
+
+    wBM25 = scoring.BM25F(B=0.75, title_B=1.0, body_B=0.5, K1=2)
+    wtf = TF_IDF()
+    q = MultifieldParser(['title', 'body'], schema=ix.schema)
+    schema = Schema(id=NUMERIC, title=TEXT(stored=True), body=TEXT(stored=True))
+    writer.add_document(id=p.getId(), title=preProcess(p.getTitolo().lower()), body=preProcess(p.getContenuto().lower()))
+
+***********************************************************************************************************************/
+
+NDCG EVALUATION con BM25:
+MEDIA:  0.5704833612269871
+NDCG EVALUATION con TF_IDF:
+MEDIA:  0.47757773641889867
+
+MAP EVALUATION con BM25
+MEDIA:  0.6243624338624337
+MAP EVALUATION con TF_IDF
+MEDIA:  0.5033174603174603
 ------------------------------------------------------------------------------------------------------------------------

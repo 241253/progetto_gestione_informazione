@@ -7,6 +7,7 @@ def preProcess(contenuto, isString=True):
     tokens = removePunctuation(tokens)
     tokens = removeStopWords(tokens)
     tokens = lemmatize(tokens)
+    tokens = stem(tokens)
     if(isString):
         return ' '.join(tokens)
     else:
