@@ -27,6 +27,5 @@ for p in pagine:
     # writer.add_document(id=p.getId(), title=p.getTitolo(), body=p.getContenuto(), paragraphTitle=p.getTitoliParagrafi(), category=p.getCategoria(), infobox=p.getInfobox())
     writer.add_document(id=p.getId(), title=p.getTitolo().lower(), body=p.getContenuto().lower())
     # writer.add_document(id=p.getId(), title=preProcess(p.getTitolo().lower()), body=preProcess(p.getContenuto().lower()))
-
 writer.commit()
 print('Fine creazione dell\'indice\n')
