@@ -4,7 +4,9 @@ from nltk.corpus import stopwords, wordnet
 
 def preProcess(contenuto, isString=True):
     tokens = tokenize(contenuto)
+    tokens = removePunctuation(tokens)
     tokens = removeStopWords(tokens)
+    tokens = lemmatize(tokens)
     if(isString):
         return ' '.join(tokens)
     else:
