@@ -1,3 +1,26 @@
+preprocessing --> rimozione punctuation
+/***********************************************************************************************************************
+
+    wBM25 = scoring.BM25F(B=0.75, title_B=1.0, body_B=0.5, K1=2)
+    wtf = TF_IDF()
+    q = MultifieldParser(['title', 'body'], schema=ix.schema)
+    schema = Schema(id=NUMERIC, title=TEXT(stored=True), body=TEXT(stored=True))
+    writer.add_document(id=p.getId(), title=preProcess(p.getTitolo().lower()), body=preProcess(p.getContenuto().lower())
+                       )
+
+***********************************************************************************************************************/
+
+NDCG EVALUATION con BM25:
+MEDIA:  0.5715507790373425
+NDCG EVALUATION con TF_IDF:
+MEDIA:  0.5040148346320928
+
+MAP EVALUATION con BM25
+MEDIA:  0.6018955026455026
+MAP EVALUATION con TF_IDF
+MEDIA:  0.5087883597883596
+------------------------------------------------------------------------------------------------------------------------
+
 NB: BISOGNA PREPROCESSARE ANCHE IL GROUND_TRUTH!!!
 
 preprocessing --> removeStopwords
