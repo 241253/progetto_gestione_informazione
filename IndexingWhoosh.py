@@ -22,10 +22,6 @@ print('parsing dump wikipedia terminato\n')
 
 print('Creazione dell\'indice in corso...')
 for p in pagine:
-    # per usare il preprocessing scommentare la riga sottostante e commentare quella successiva
-    # writer.add_document(id=p.getId(), title=preProcess(p.getTitolo()), body=preProcess(p.getContenuto()), paragraphTitle=preProcess(p.getTitoliParagrafi()), category=preProcess(p.getCategoria()), infobox=preProcess(p.getInfobox()))
-    # writer.add_document(id=p.getId(), title=p.getTitolo(), body=p.getContenuto(), paragraphTitle=p.getTitoliParagrafi(), category=p.getCategoria(), infobox=p.getInfobox())
     writer.add_document(id=p.getId(), title=p.getTitolo().lower(), body=p.getContenuto().lower())
-    # writer.add_document(id=p.getId(), title=preProcess(p.getTitolo().lower()), body=preProcess(p.getContenuto().lower()))
 writer.commit()
 print('Fine creazione dell\'indice\n')

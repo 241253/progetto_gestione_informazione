@@ -1,0 +1,108 @@
+con campo paragraphTitle
+/***********************************************************************************************************************
+
+    wBM25 = scoring.BM25F(B=0.75, K1=1.5)
+    wtf = TF_IDF()
+    q = MultifieldParser(['title', 'body', 'paragraphTitle'], schema=ix.schema)
+    writer.add_document(id=p.getId(), title=p.getTitolo().lower(), body=p.getContenuto().lower(), paragraphTitle=p.getTitoliParagrafi().lower())
+
+***********************************************************************************************************************/
+
+NDCG EVALUATION con BM25:
+MEDIA:  0.41152777669722124
+NDCG EVALUATION con TF_IDF:
+MEDIA:  0.49913524917153784
+
+MAP EVALUATION con BM25
+MEDIA:  0.4260727513227513
+MAP EVALUATION con TF_IDF
+MEDIA:  0.5083148148148148
+------------------------------------------------------------------------------------------------------------------------
+
+con campo infobox
+/***********************************************************************************************************************
+
+    wBM25 = scoring.BM25F(B=0.75, K1=1.5)
+    wtf = TF_IDF()
+    q = MultifieldParser(['title', 'body', 'infobox'], schema=ix.schema)
+    schema = Schema(id=NUMERIC, title=TEXT(stored=True), body=TEXT(stored=True), infobox=TEXT(stored=True))
+    writer.add_document(id=p.getId(), title=p.getTitolo().lower(), body=p.getContenuto().lower(), infobox=p.getInfobox().lower())
+
+***********************************************************************************************************************/
+
+NDCG EVALUATION con BM25:
+MEDIA:  0.43880193809242146
+NDCG EVALUATION con TF_IDF:
+MEDIA:  0.4914720087051154
+
+MAP EVALUATION con BM25
+MEDIA:  0.4606349206349208
+MAP EVALUATION con TF_IDF
+MEDIA:  0.4869047619047619
+------------------------------------------------------------------------------------------------------------------------
+
+con campo category
+/***********************************************************************************************************************
+
+    wBM25 = scoring.BM25F(B=0.75, K1=1.5)
+    wtf = TF_IDF()
+    q = MultifieldParser(['title', 'body', 'category'], schema=ix.schema)
+    schema = Schema(id=NUMERIC, title=TEXT(stored=True), body=TEXT(stored=True), category=TEXT(stored=True))
+    writer.add_document(id=p.getId(), title=p.getTitolo().lower(), body=p.getContenuto().lower(), category=p.getCategoria().lower())
+
+***********************************************************************************************************************/
+
+NDCG EVALUATION con BM25:
+MEDIA:  0.4188262995631087
+NDCG EVALUATION con TF_IDF:
+MEDIA:  0.511066053102628
+
+MAP EVALUATION con BM25
+MEDIA:  0.5018624338624338
+MAP EVALUATION con TF_IDF
+MEDIA:  0.5066997354497355
+------------------------------------------------------------------------------------------------------------------------
+
+con campi category, infobox e paragraphTitle
+/***********************************************************************************************************************
+
+    wBM25 = scoring.BM25F(B=0.75, K1=1.5)
+    wtf = TF_IDF()
+    q = MultifieldParser(['title', 'body', 'paragraphTitle', 'infobox', 'category'], schema=ix.schema)
+    schema = Schema(id=NUMERIC, title=TEXT(stored=True), body=TEXT(stored=True), category=TEXT(stored=True), infobox=TEXT(stored=True), paragraphTitle=TEXT(stored=True))
+    writer.add_document(id=p.getId(), title=p.getTitolo().lower(), body=p.getContenuto().lower(), category=p.getCategoria().lower(), infobox=p.getInfobox().lower(), paragraphTitle=p.getTitoliParagrafi().lower())
+
+***********************************************************************************************************************/
+
+NDCG EVALUATION con BM25:
+MEDIA:  0.4183067701133051
+NDCG EVALUATION con TF_IDF:
+MEDIA:  0.48880265499866205
+
+MAP EVALUATION con BM25
+MEDIA:  0.48480555555555555
+MAP EVALUATION con TF_IDF
+MEDIA:  0.4815568783068782
+------------------------------------------------------------------------------------------------------------------------
+
+con campi category e paragraphTitle
+/***********************************************************************************************************************
+
+    wBM25 = scoring.BM25F(B=0.75, K1=1.5)
+    wtf = TF_IDF()
+    q = MultifieldParser(['title', 'body', 'paragraphTitle', 'category'], schema=ix.schema)
+    schema = Schema(id=NUMERIC, title=TEXT(stored=True), body=TEXT(stored=True), category=TEXT(stored=True), paragraphTitle=TEXT(stored=True))
+    writer.add_document(id=p.getId(), title=p.getTitolo().lower(), body=p.getContenuto().lower(), category=p.getCategoria().lower(), paragraphTitle=p.getTitoliParagrafi().lower())
+
+***********************************************************************************************************************/
+
+NDCG EVALUATION con BM25:
+MEDIA:  0.400588509375453
+NDCG EVALUATION con TF_IDF:
+MEDIA:  0.5085853323610781
+
+MAP EVALUATION con BM25
+MEDIA:  0.4543359788359788
+MAP EVALUATION con TF_IDF
+MEDIA:  0.5038015873015873
+------------------------------------------------------------------------------------------------------------------------

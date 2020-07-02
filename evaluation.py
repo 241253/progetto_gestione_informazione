@@ -42,7 +42,7 @@ def get_results(search_key, weighting):
 def ndcg_evaluation(weighting):
     x = []
     true_relevance = [6, 5, 4, 3, 2, 1, 1, 1, 1, 1]
-    idcg = 6
+    idcg = true_relevance[0]
     for i in range(1, len(true_relevance)):
         idcg += true_relevance[i] / log(i+1, 2)
     media = 0
@@ -54,7 +54,7 @@ def ndcg_evaluation(weighting):
         if len(risultati) != 0:
             for r in risultati:
                 if r in ground_truth:
-                    scores.append(point if point > 0 else 1)
+                    scores.append(true_relevance[ground_truth.index(r)])
                 else:
                     scores.append(0)
                 point -= 1
@@ -82,7 +82,7 @@ def map_evaluation(weighting):
         for i in range(len(risultati)):
             if risultati[i] in ground_truth:
                 countRilevanti += 1
-                sumAveragePrecision += countRilevanti / (i+1)
+            sumAveragePrecision += countRilevanti / (i+1)
             precision.append(countRilevanti / (i+1))
             x[i] += countRilevanti / (i+1)
 
@@ -95,23 +95,22 @@ def map_evaluation(weighting):
 
 if __name__ == '__main__':
     ix = index.open_dir("indexdir/index")
-    # wBM25 = scoring.BM25F(B=0.75, title_B=2, paragraphTitle=1.5, body_B=1.25, category_B=0.5, infobox_B=0.75, K1=1.5)
-    wBM25 = scoring.BM25F(B=0.75, K1=1.5)
+    wBM25 = scoring.BM25F(B=0.75, title_B=1.0, body_B=0.5, K1=2)
     wtf = TF_IDF()
 
     print("NDCG EVALUATION con BM25:")
     y = ndcg_evaluation(wBM25)
-    NDCG_graphic(y)
+    # NDCG_graphic(y)
     print("NDCG EVALUATION con TF_IDF:")
     y = ndcg_evaluation(wtf)
-    NDCG_graphic(y, 'TF_IDF')
+    # NDCG_graphic(y, 'TF_IDF')
 
     print("\n")
 
     print("MAP EVALUATION con BM25")
     x = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
     y = map_evaluation(wBM25)
-    MAP_graphic(x, y)
+    # MAP_graphic(x, y)
     print("MAP EVALUATION con TF_IDF")
     y = map_evaluation(wtf)
-    MAP_graphic(x, y, 'TF_IDF')
+    # MAP_graphic(x, y, 'TF_IDF')
