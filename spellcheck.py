@@ -18,6 +18,7 @@ def isMispelled(query):
     return False
 
 def correct(query):
+    query.lower()
     query_tokens = query.split(' ')
     final_query = ''
     spell = SpellChecker()
@@ -33,11 +34,3 @@ def correct(query):
         else:
             final_query += ' ' + word
     return final_query[1:]
-
-query = 'Apple Babana Chery'
-query = query.lower()
-
-if(isMispelled(query)):
-    print(correct(query))
-else:
-    print("La parola era corretta.")

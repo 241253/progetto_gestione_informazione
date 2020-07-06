@@ -4,7 +4,15 @@ import whoosh.index as index
 from whoosh.qparser import MultifieldParser
 from tkinter import *
 from whoosh.scoring import TF_IDF
-from preProcessing import queryExpansion
+from progetto_gestione_informazione.preProcessing import queryExpansion
+from progetto_gestione_informazione.spellcheck import isMispelled, correct
+
+
+def correct_query():
+    query = correct(txt.get())
+    txt.delete(0, END)
+    txt.insert(0, query)
+    search_clicked()
 
 displayed_results = list()
 current_page = 0
@@ -57,6 +65,7 @@ mw = TF_IDF()
 
 # Funzione di ricerca per termine (globale)
 def search_clicked():
+    fc_btn.grid_remove()
     global current_page
     if len(displayed_results) != 0:
         page_clear(True)
@@ -73,6 +82,10 @@ def search_clicked():
             displayed_results.append((label_num, button_url))
     current_page = 0
     select_page()
+
+    if isMispelled(txt.get()):
+        fc_btn.grid(columnspan=10, row=2, sticky='ew')
+        fc_btn.configure(text='Forse cercavi: ' + correct(txt.get()))
 
 # APERTURA INDICE
 ix = index.open_dir("indexdir/index")
@@ -96,9 +109,14 @@ txt.grid(columnspan=8, row=1)
 search_btn = Button(window, text="Cerca", command=search_clicked)
 search_btn.grid(column=8, columnspan=2, row=1)
 
+#bottone forse cercavi
+fc_btn = Button(window, command=correct_query)
+fc_btn.grid(columnspan=10, row=2, sticky='ew')
+fc_btn.grid_remove()
+
 #Selettore pagine
 page1_btn = Button(window, text="pagina successiva", command=select_page)
-page1_btn.grid(columnspan=10, row=2, sticky='ew')
+page1_btn.grid(columnspan=10, row=3, sticky='ew')
 
 
 # Loop finestra (mantiene la finestra aperta)
