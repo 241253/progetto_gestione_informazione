@@ -45,14 +45,16 @@ class pagina:
     def getTitoliParagrafi(self):
         return '\n'.join(self.titoliParagrafi)
 
-    def extractInformation(self):
-        pass
+    def extractInformation(self, infobox=False, category=False, paragraphTitle=False):
         # Estrae infobox
-        # self._extractInfobox(self.getContenuto().split('\n'))
+        if infobox:
+            self._extractInfobox(self.getContenuto().split('\n'))
         # Estrae categorie
-        # self._extractCategory(self.getContenuto().split('\n'))
+        if category:
+            self._extractCategory(self.getContenuto().split('\n'))
         # Estrae titoli dei paragrafi
-        # self._extractParagraphTitle(self.getContenuto().split('\n'))
+        if paragraphTitle:
+            self._extractParagraphTitle(self.getContenuto().split('\n'))
 
     def _extractInfobox(self, text):
         count = 1
@@ -113,8 +115,6 @@ class pagina:
         for line in text:
             if line[0:2] == '==' and line[-2:] == '==':
                 self.titoliParagrafi.append(line.replace('=', ''))
-
-
 
     def __str__(self):
         return f'ID:{self.id}\nTitolo:{self.titolo.encode("utf-8")}\nContenuto:{self.contenuto.encode("utf-8")}\n'
