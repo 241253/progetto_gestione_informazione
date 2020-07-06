@@ -1,8 +1,8 @@
 import os
 from whoosh.fields import *
 from whoosh.index import create_in
-from progetto_gestione_informazione import xmlparserSAX
-from progetto_gestione_informazione.preProcessing import preProcess
+import xmlparserSAX
+from preProcessing import preProcess
 
 # CREO IL NUOVO INDICE DI PROVA
 # schema = Schema(id=NUMERIC, title=TEXT(stored=True), body=TEXT(stored=True), paragraphTitle=TEXT(stored=True), category=TEXT(stored=True), infobox=TEXT(stored=True))
