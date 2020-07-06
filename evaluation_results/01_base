@@ -10,13 +10,9 @@ indicizzazione BASE (solo lower())
 
 ***********************************************************************************************************************/
 
-NDCG EVALUATION con BM25:
-MEDIA:  0.5288407936646903
-NDCG EVALUATION con TF_IDF:
-MEDIA:  0.5040826030428814
+NDCG EVALUATION con BM25: 0.530871723365306
+NDCG EVALUATION con TF_IDF: 0.5040148346320928
 
-MAP EVALUATION con BM25
-MEDIA:  0.5730925925925925
-MAP EVALUATION con TF_IDF
-MEDIA:  0.5092050264550263
+MAP EVALUATION con BM25 0.3911447811447812
+MAP EVALUATION con TF_IDF 0.347987012987013
 ------------------------------------------------------------------------------------------------------------------------
