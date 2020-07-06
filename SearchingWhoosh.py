@@ -4,7 +4,7 @@ import whoosh.index as index
 from whoosh.qparser import MultifieldParser
 from tkinter import *
 from whoosh.scoring import TF_IDF
-from preProcessing import queryExpansion
+from .preProcessing import preProcess, queryExpansion
 
 displayed_results = list()
 

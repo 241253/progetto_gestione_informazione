@@ -2,7 +2,6 @@ from math import log
 from whoosh import scoring, index
 from whoosh.qparser import MultifieldParser
 from whoosh.scoring import TF_IDF
-
 from graphics import MAP_graphic, NDCG_graphic
 from preProcessing import queryExpansion, preProcess
 
@@ -27,6 +26,7 @@ def get_results(search_key, weighting):
     search_key = search_key.lower()
     search_key = preProcess(search_key)
     # search_key = queryExpansion(search_key)
+    # print(search_key)
     r = q.parse(search_key)
     l = []
     with ix.searcher(weighting=weighting) as searcher:
@@ -69,50 +69,57 @@ def ndcg_evaluation(weighting):
         media += res
         # print(q, ": ", res, scores)
         x.append(res)
-    print('MEDIA: ', media/30)
-    return x
+    return (media/30), x
 
 def map_evaluation(weighting):
-    x = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    x = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
     sumMeanAveragePrecision = 0.0
     for q in queries:
+        relevant = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         ground_truth = get_ground_truth(q)
         risultati = get_results(q, weighting)
         precision = []
         countRilevanti = 0
-        sumAveragePrecision = 0.0
+
         for i in range(len(risultati)):
             if risultati[i] in ground_truth:
+                relevant[i] = 1
                 countRilevanti += 1
-            sumAveragePrecision += countRilevanti / (i+1)
-            precision.append(countRilevanti / (i+1))
-            x[i] += countRilevanti / (i+1)
+                precision.append(countRilevanti / (i+1))
+        for _ in range(10-len(precision)):
+            precision.append(0)
 
-        # sumMeanAveragePrecision += sumAveragePrecision / countRilevanti if countRilevanti != 0 else 0
-        sumMeanAveragePrecision += sumAveragePrecision / len(ground_truth)
-        # print(q, ":", sumAveragePrecision / len(ground_truth), precision)
+        precision.reverse()
+        for i in range(1, len(precision)):
+            if precision[i] < precision[i-1]:
+                precision[i] = precision[i-1]
+        precision.append(precision[9])
+        precision.reverse()
 
-    print('MEDIA: ', sumMeanAveragePrecision / 30)
-    return [i/30 for i in x]
+        for i in range(len(precision)):
+            x[i] += precision[i]
+
+        sumMeanAveragePrecision += sum(precision) / 11
+        # print(q, ":", precision, relevant)
+    # print([i/30 for i in x])
+    return (sumMeanAveragePrecision / 30), [i/30 for i in x]
 
 if __name__ == '__main__':
     ix = index.open_dir("indexdir/index")
     wBM25 = scoring.BM25F(B=0.75, title_B=1.0, body_B=0.5, K1=2)
     wtf = TF_IDF()
 
-    print("NDCG EVALUATION con BM25:")
-    y = ndcg_evaluation(wBM25)
-    # NDCG_graphic(y)
-    print("NDCG EVALUATION con TF_IDF:")
-    y = ndcg_evaluation(wtf)
-    # NDCG_graphic(y, 'TF_IDF')
-
-    print("\n")
-
-    print("MAP EVALUATION con BM25")
-    x = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
-    y = map_evaluation(wBM25)
-    # MAP_graphic(x, y)
-    print("MAP EVALUATION con TF_IDF")
-    y = map_evaluation(wtf)
-    # MAP_graphic(x, y, 'TF_IDF')
+    m, y = ndcg_evaluation(wBM25)
+    print("NDCG EVALUATION con BM25:", m)
+    NDCG_graphic(y)
+    m, y = ndcg_evaluation(wtf)
+    print("NDCG EVALUATION con TF_IDF:", m)
+    NDCG_graphic(y, 'TF_IDF')
+    print()
+    x = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+    m, y = map_evaluation(wBM25)
+    print("MAP EVALUATION con BM25", m)
+    MAP_graphic(x, y)
+    m, y = map_evaluation(wtf)
+    print("MAP EVALUATION con TF_IDF", m)
+    MAP_graphic(x, y, 'TF_IDF')
