@@ -11,15 +11,11 @@ preprocessing --> rimozione punctuation
 
 ***********************************************************************************************************************/
 
-NDCG EVALUATION con BM25:
-MEDIA:  0.5715507790373425
-NDCG EVALUATION con TF_IDF:
-MEDIA:  0.5040148346320928
+NDCG EVALUATION con BM25: 0.5715507790373425
+NDCG EVALUATION con TF_IDF: 0.5040148346320928
 
-MAP EVALUATION con BM25
-MEDIA:  0.6018955026455026
-MAP EVALUATION con TF_IDF
-MEDIA:  0.5087883597883596
+MAP EVALUATION con BM25 0.4069252044252044
+MAP EVALUATION con TF_IDF 0.347987012987013
 ------------------------------------------------------------------------------------------------------------------------
 
 preprocessing --> removeStopwords
@@ -77,15 +73,11 @@ preprocessing --> lemmatize
 
 ***********************************************************************************************************************/
 
-NDCG EVALUATION con BM25:
-MEDIA:  0.5640065495511134
-NDCG EVALUATION con TF_IDF:
-MEDIA:  0.48721782956133436
+NDCG EVALUATION con BM25: 0.5383728524365151
+NDCG EVALUATION con TF_IDF: 0.48533137071791826
 
-MAP EVALUATION con BM25
-MEDIA:  0.6038690476190477
-MAP EVALUATION con TF_IDF
-MEDIA:  0.50255291005291
+MAP EVALUATION con BM25 0.38546777296777296
+MAP EVALUATION con TF_IDF 0.33322029822029825
 ------------------------------------------------------------------------------------------------------------------------
 
 preprocessing --> stem
@@ -99,16 +91,13 @@ preprocessing --> stem
 
 ***********************************************************************************************************************/
 
-NDCG EVALUATION con BM25:
-MEDIA:  0.5611213281627907
-NDCG EVALUATION con TF_IDF:
-MEDIA:  0.4755645974431945
+NDCG EVALUATION con BM25: 0.45968973805737695
+NDCG EVALUATION con TF_IDF: 0.44585824629669574
 
-MAP EVALUATION con BM25
-MEDIA:  0.6053505291005291
-MAP EVALUATION con TF_IDF
-MEDIA:  0.49979497354497354
+MAP EVALUATION con BM25 0.3413299663299663
+MAP EVALUATION con TF_IDF 0.3228066378066379
 ------------------------------------------------------------------------------------------------------------------------
+
 
 preprocessing --> removePunctuacion + remove Stopwords + lem
 /***********************************************************************************************************************
