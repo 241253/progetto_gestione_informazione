@@ -4,7 +4,7 @@ import whoosh.index as index
 from whoosh.qparser import MultifieldParser
 from tkinter import *
 from whoosh.scoring import TF_IDF
-from progetto_gestione_informazione.preProcessing import queryExpansion
+from preProcessing import queryExpansion
 
 displayed_results = list()
 current_page = 0
@@ -81,11 +81,11 @@ search_type = 'id'
 # GUI
 # Creazione finestra
 window = Tk()
-window.title("Il TOP SEARCHER di J e Z")
+window.title("Wikipedia Search Engine")
 window.resizable(False, False)
 
 # Creazione label verifica tipo di ricerca
-lbl = Label(window, text='Ricerca pagina 1:')
+lbl = Label(window, text='Inserisci qui sotto la tua ricerca:')
 lbl.grid(columnspan=10, row=0)
 
 # Creazione casella di testo
