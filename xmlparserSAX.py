@@ -121,11 +121,15 @@ class pagina:
 
 
 class countHandler(xml.sax.handler.ContentHandler):
-    def __init__(self):
+    def __init__(self, infobox=False, category=False, paragraphTitle=False):
         self.primo_id = True
         self.pagine = []
         self.tempPagina = pagina()
         self.currentTag = ""
+        self.extract_infobox = infobox
+        self.extract_category = category
+        self.extract_paragraphTitle = paragraphTitle
+
 
     def startElement(self, name, attr):
         self.currentTag = name
@@ -146,7 +150,7 @@ class countHandler(xml.sax.handler.ContentHandler):
         if name == 'id':
             self.primo_id = False
         if name == 'page':
-            self.tempPagina.extractInformation()
+            self.tempPagina.extractInformation(infobox=self.extract_infobox, category=self.extract_category, paragraphTitle=self.extract_paragraphTitle)
             self.pagine.append(self.tempPagina)
             self.tempPagina = pagina()
 
@@ -160,12 +164,12 @@ def pagina_non_presente(pagine, titolo_pagina):
             return False
     return True
 
-def getParsedPage():
+def getParsedPage(infobox=False, category=False, paragraphTitle=False):
     parser = xml.sax.make_parser()
     pagine = list()
     dumps = [f for f in listdir("dump") if isfile(join("dump", f))]
     for d in dumps:
-        handler = countHandler()
+        handler = countHandler(infobox=infobox, category=category, paragraphTitle=paragraphTitle)
         parser.setContentHandler(handler)
         parser.parse("dump/" + d)
         if(len(handler.getPagine()) != 0 and pagina_non_presente(pagine, handler.getPagine()[0].getTitolo())):
