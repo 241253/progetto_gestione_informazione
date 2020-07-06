@@ -7,6 +7,42 @@ from whoosh.scoring import TF_IDF
 from progetto_gestione_informazione.preProcessing import queryExpansion
 
 displayed_results = list()
+current_page = 0
+
+def select_page():
+    global current_page
+    page_clear()
+    if current_page == 0:
+        page_display(0)
+    elif current_page == 1:
+        page_display(10)
+    else:
+        page_display(20)
+    current_page = (current_page+1)%3
+
+def page_display(start):
+    position = 4
+    for i in range(start, 10+start):
+        if i < len(displayed_results):
+            displayed_results[i][0].configure(text=f'{i + 1}.')
+            displayed_results[i][0].grid(column=0, row=position)
+            displayed_results[i][1].grid(columnspan=9, column=1, row=position, sticky='ew')
+        else:
+            break
+        position += 1
+
+def page_clear(clear=False):
+    global displayed_results
+    # resetto interfaccia grafica (parte risultati)
+    for item in displayed_results:
+        if clear:
+            item[0].destroy()
+            item[1].destroy()
+        else:
+            item[0].grid_remove()
+            item[1].grid_remove()
+    if clear:
+        displayed_results = list()
 
 # Funzione che assegna l'url di una pagina ad un bottone
 def callback(url):
@@ -21,13 +57,9 @@ mw = TF_IDF()
 
 # Funzione di ricerca per termine (globale)
 def search_clicked():
-    global displayed_results
-    # resetto interfaccia grafica (parte risultati)
-    for item in displayed_results:
-        item[0].destroy()
-        item[1].destroy()
-    displayed_results = list()
-
+    global current_page
+    if len(displayed_results) != 0:
+        page_clear(True)
     q = MultifieldParser(['title', 'body'], schema=ix.schema)
     search_keyword = txt.get()
     search_keyword = queryExpansion(search_keyword)
@@ -39,11 +71,8 @@ def search_clicked():
             label_num = Label(window, text='0.')
             button_url = Button(window, text=r['title'], command=callback(url))
             displayed_results.append((label_num, button_url))
-
-        for i in range(len(displayed_results)):
-            displayed_results[i][0].configure(text=f'{i + 1}.')
-            displayed_results[i][0].grid(column=0, row=i + 3)
-            displayed_results[i][1].grid(column=1, row=i + 3, sticky='ew')
+    current_page = 0
+    select_page()
 
 # APERTURA INDICE
 ix = index.open_dir("indexdir/index")
@@ -53,19 +82,24 @@ search_type = 'id'
 # Creazione finestra
 window = Tk()
 window.title("Il TOP SEARCHER di J e Z")
-window.resizable(False, True)
+window.resizable(False, False)
 
 # Creazione label verifica tipo di ricerca
-lbl = Label(window, text='Ricerca per titolo:')
-lbl.grid(columnspan=20, row=0)
+lbl = Label(window, text='Ricerca pagina 1:')
+lbl.grid(columnspan=10, row=0)
 
 # Creazione casella di testo
-txt = Entry(window, width=125)
-txt.grid(columnspan=18, row=1)
+txt = Entry(window, width=50)
+txt.grid(columnspan=8, row=1)
 
 # Creazione bottone di ricerca
 search_btn = Button(window, text="Cerca", command=search_clicked)
-search_btn.grid(column=18, columnspan=2, row=1)
+search_btn.grid(column=8, columnspan=2, row=1)
+
+#Selettore pagine
+page1_btn = Button(window, text="pagina successiva", command=select_page)
+page1_btn.grid(columnspan=10, row=2, sticky='ew')
+
 
 # Loop finestra (mantiene la finestra aperta)
 window.mainloop()
