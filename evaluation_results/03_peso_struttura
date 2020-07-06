@@ -31,13 +31,9 @@ peso dei campi title, body, category e paragraphTitle
 
 ***********************************************************************************************************************/
 
-NDCG EVALUATION con BM25:
-MEDIA:  0.45065322547170356
-NDCG EVALUATION con TF_IDF:
-MEDIA:  0.5085853323610781
+NDCG EVALUATION con BM25: 0.4295666534454385
+NDCG EVALUATION con TF_IDF: 0.48880265499866205
 
-MAP EVALUATION con BM25
-MEDIA:  0.4753425925925926
-MAP EVALUATION con TF_IDF
-MEDIA:  0.5038015873015873
+MAP EVALUATION con BM25 0.3156469456469457
+MAP EVALUATION con TF_IDF 0.3292075517075517
 ------------------------------------------------------------------------------------------------------------------------
