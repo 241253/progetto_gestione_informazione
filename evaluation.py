@@ -16,7 +16,7 @@ def get_ground_truth(query):
     ground_truth = []
     with open('evaluation_files/' + query, 'r') as file:
         ground_truth = file.readlines()
-    ground_truth = [preProcess(x[:-1].lower()) for x in ground_truth]
+    ground_truth = [x[:-1].lower() for x in ground_truth]
     return ground_truth
 
 def get_results(search_key, weighting):
@@ -24,9 +24,8 @@ def get_results(search_key, weighting):
     q = MultifieldParser(['title', 'body'], schema=ix.schema)
 
     search_key = search_key.lower()
-    search_key = preProcess(search_key)
+    # search_key = preProcess(search_key)
     # search_key = queryExpansion(search_key)
-    # print(search_key)
     r = q.parse(search_key)
     l = []
     with ix.searcher(weighting=weighting) as searcher:
@@ -111,15 +110,15 @@ if __name__ == '__main__':
 
     m, y = ndcg_evaluation(wBM25)
     print("NDCG EVALUATION con BM25:", m)
-    NDCG_graphic(y)
+    # NDCG_graphic(y)
     m, y = ndcg_evaluation(wtf)
     print("NDCG EVALUATION con TF_IDF:", m)
-    NDCG_graphic(y, 'TF_IDF')
+    # NDCG_graphic(y, 'TF_IDF')
     print()
     x = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
     m, y = map_evaluation(wBM25)
     print("MAP EVALUATION con BM25", m)
-    MAP_graphic(x, y)
+    # MAP_graphic(x, y)
     m, y = map_evaluation(wtf)
     print("MAP EVALUATION con TF_IDF", m)
-    MAP_graphic(x, y, 'TF_IDF')
+    # MAP_graphic(x, y, 'TF_IDF')
