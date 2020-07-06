@@ -12,7 +12,6 @@ class pagina:
         self.categoria = list()
         self.titoliParagrafi = list()
 
-
     def setTitolo(self, titolo):
         self.titolo = self.titolo + titolo
 

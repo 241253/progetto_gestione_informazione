@@ -37,7 +37,7 @@ def search_clicked():
         results = searcher.search(r, limit=30)
         # countUrl = 0
         for r in results:
-            url = 'en.wikipedia.org/wiki/' + str(r['title'])
+            url = str(r['url'])
             label_num = Label(window, text='0.')
             label_title = Label(window, text=r['title'])
             button_url = Button(window, text="Vai al sito", command=callback(url))
