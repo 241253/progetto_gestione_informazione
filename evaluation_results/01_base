@@ -5,8 +5,8 @@ indicizzazione BASE (solo lower())
     wBM25 = scoring.BM25F(B=0.75, K1=1.5)
     wtf = TF_IDF()
     q = MultifieldParser(['title', 'body'], schema=ix.schema)
-    schema = Schema(id=NUMERIC, title=TEXT(stored=True), body=TEXT(stored=True))
-    writer.add_document(id=p.getId(), title=p.getTitolo().lower(), body=p.getContenuto().lower())
+    schema = Schema(id=NUMERIC, title=TEXT(stored=True), body=TEXT(stored=True), url=TEXT(stored=True))
+    writer.add_document(id=p.getId(), title=p.getTitolo().lower(), body=p.getContenuto().lower(), url=p.getURL())
 
 ***********************************************************************************************************************/
 
