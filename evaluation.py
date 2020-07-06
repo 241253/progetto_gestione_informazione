@@ -16,7 +16,7 @@ def get_ground_truth(query):
     ground_truth = []
     with open('evaluation_files/' + query, 'r') as file:
         ground_truth = file.readlines()
-    ground_truth = [x[:-1].lower() for x in ground_truth]
+    ground_truth = [preProcess(x[:-1].lower()) for x in ground_truth]
     return ground_truth
 
 def get_results(search_key, weighting):
@@ -24,8 +24,9 @@ def get_results(search_key, weighting):
     q = MultifieldParser(['title', 'body'], schema=ix.schema)
 
     search_key = search_key.lower()
-    # search_key = preProcess(search_key)
-    # search_key = queryExpansion(search_key)
+    search_key = preProcess(search_key)
+    search_key = queryExpansion(search_key)
+    # print(search_key)
     r = q.parse(search_key)
     l = []
     with ix.searcher(weighting=weighting) as searcher:

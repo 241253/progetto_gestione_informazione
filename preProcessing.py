@@ -4,10 +4,10 @@ from nltk.corpus import stopwords, wordnet
 
 def preProcess(contenuto, isString=True):
     tokens = tokenize(contenuto)
-    tokens = removePunctuation(tokens)
+    # tokens = removePunctuation(tokens)
     tokens = removeStopWords(tokens)
-    tokens = lemmatize(tokens)
-    tokens = stem(tokens)
+    # tokens = lemmatize(tokens)
+    # tokens = stem(tokens)
     if(isString):
         return ' '.join(tokens)
     else:
@@ -32,10 +32,9 @@ def removeStopWords(tokens):
     return [x for x in tokens if x not in stopwords.words('english')]
 
 def queryExpansion(query):
-    query = query.lower()
     finalQuery = []
     count = 0
-    for word in removeStopWords(removePunctuation(tokenize(query))):
+    for word in tokenize(query):
         for synonyms in wordnet.synsets(word):
             for synonym in synonyms.lemmas():
                 if count < 3:
@@ -44,5 +43,5 @@ def queryExpansion(query):
                         finalQuery.append(syn)
                         count += 1
         count = 0
-        query = ' '.join([q+'^2.0' for q in query.split()])
-    return '(' + query + ') OR ' + ' OR '.join(['(' + fq[1:-1] + '^0.5)' for fq in finalQuery])
+        query = ' '.join([q for q in query.split()])
+    return query if len(finalQuery) == 0 else '(' + query + ') OR ' + ' OR '.join(['(' + fq[1:-1] + ')' for fq in finalQuery])
