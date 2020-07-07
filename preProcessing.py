@@ -71,6 +71,3 @@ def queryExpansion(query):
                     finalQuery.append(syn)
                     count += 1
     return query if len(finalQuery) == 0 else '(' + query + ') OR ' + ' OR '.join(finalQuery)
-
-if __name__ == '__main__':
-    print(queryExpansion('Read The Manual'))

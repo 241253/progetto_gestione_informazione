@@ -78,7 +78,7 @@ def search_clicked():
         for r in results:
             url = str(r['url'])
             label_num = Label(window, text='0.')
-            button_url = Button(window, text=r['title'], command=callback(url))
+            button_url = Button(window, text=r['url'][30:], command=callback(url))
             displayed_results.append((label_num, button_url))
     current_page = 0
     select_page()
