@@ -2,6 +2,7 @@ import xml.sax
 from os import listdir
 from os.path import isfile, join
 
+paragraphTitle_exclude = ['references', 'external links', 'see also', 'notes', 'sources', 'bibliography']
 
 class pagina:
     def __init__(self):
@@ -115,6 +116,9 @@ class pagina:
         for line in text:
             if line[0:2] == '==' and line[-2:] == '==':
                 self.titoliParagrafi.append(line.replace('=', ''))
+        self.titoliParagrafi = [line.strip() for line in self.titoliParagrafi if line.lower().strip() not in paragraphTitle_exclude ]
+
+
 
     def __str__(self):
         return f'ID:{self.id}\nTitolo:{self.titolo.encode("utf-8")}\nContenuto:{self.contenuto.encode("utf-8")}\n'
@@ -179,7 +183,10 @@ def getParsedPage(infobox=False, category=False, paragraphTitle=False):
 
 if __name__ == '__main__':
     print('Inizio parsing')
-    pagine = getParsedPage()
+    pagine = getParsedPage(paragraphTitle=True)
     print('Fine parsing')
     print(len(pagine))
-    print(pagine[3].getInfobox())
+    print()
+    for _ in range(20):
+        print(pagine[_].getTitoliParagrafi())
+        print()

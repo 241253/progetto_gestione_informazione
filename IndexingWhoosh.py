@@ -1,8 +1,8 @@
 import os
 from whoosh.fields import *
 from whoosh.index import create_in
-import xmlparserSAX
-from preProcessing import preProcess
+from progetto_gestione_informazione.xmlparserSAX import getParsedPage
+from progetto_gestione_informazione.preProcessing import preProcess
 
 # CREO IL NUOVO INDICE DI PROVA
 # schema = Schema(id=NUMERIC, title=TEXT(stored=True), body=TEXT(stored=True), paragraphTitle=TEXT(stored=True), category=TEXT(stored=True), infobox=TEXT(stored=True))
@@ -16,7 +16,7 @@ index = create_in("indexdir/index", schema)
 #POPOLO L'INDICE ID
 writer = index.writer()
 print('parsing dump wikipedia in corso...')
-pagine = xmlparserSAX.getParsedPage()
+pagine = getParsedPage()
 print('parsing dump wikipedia terminato\n')
 
 print('Creazione dell\'indice in corso...')
