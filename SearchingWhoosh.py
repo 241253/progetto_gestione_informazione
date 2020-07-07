@@ -4,7 +4,7 @@ import whoosh.index as index
 from whoosh.qparser import MultifieldParser
 from tkinter import *
 from whoosh.scoring import TF_IDF
-from progetto_gestione_informazione.preProcessing import queryExpansion
+from progetto_gestione_informazione.preProcessing import queryExpansion, preProcess
 from progetto_gestione_informazione.spellcheck import isMispelled, correct
 
 
@@ -59,9 +59,7 @@ def callback(url):
     return wrap
 
 #algoritmo di ranking che usa whoosh
-# wBM25 = scoring.BM25F(B=0.75, title_B=2.0, body_B=1.0, category_B=1.0, infobox_B=1.0, K1=1.5)
-wBM25 = scoring.BM25F(B=0.75, title_B=2.0, body_B=1.0, K1=1.5)
-mw = TF_IDF()
+wBM25 = scoring.BM25F(B=0.75, title_B=1.0, body_B=0.5, K1=2)
 
 # Funzione di ricerca per termine (globale)
 def search_clicked():
@@ -71,9 +69,9 @@ def search_clicked():
         page_clear(True)
     q = MultifieldParser(['title', 'body'], schema=ix.schema)
     search_keyword = txt.get()
-    search_keyword = queryExpansion(search_keyword)
+    search_keyword = preProcess(search_keyword)
     r = q.parse(search_keyword)
-    with ix.searcher(weighting=mw) as searcher:
+    with ix.searcher(weighting=wBM25) as searcher:
         results = searcher.search(r, limit=30)
         for r in results:
             url = str(r['url'])
