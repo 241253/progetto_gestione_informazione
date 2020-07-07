@@ -25,7 +25,7 @@ def get_results(search_key, weighting):
 
     search_key = search_key.lower()
     search_key = preProcess(search_key)
-    # search_key = queryExpansion(search_key)
+    search_key = queryExpansion(search_key)
     # print(search_key)
     r = q.parse(search_key)
     l = []
