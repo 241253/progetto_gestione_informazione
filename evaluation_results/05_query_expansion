@@ -51,3 +51,22 @@ NDCG EVALUATION con TF_IDF: 0.43761624287626766
 MAP EVALUATION con BM25 0.3514333814333814
 MAP EVALUATION con TF_IDF 0.29367003367003364
 ------------------------------------------------------------------------------------------------------------------------
+
+indicizzazione BASE (solo lower()) + query expansion
+
+/***********************************************************************************************************************
+
+    wBM25 = scoring.BM25F(B=0.75, K1=1.5)
+    wtf = TF_IDF()
+    q = MultifieldParser(['title', 'body'], schema=ix.schema)
+    schema = Schema(id=NUMERIC, title=TEXT(stored=True), body=TEXT(stored=True), url=TEXT(stored=True))
+    writer.add_document(id=p.getId(), title=p.getTitolo().lower(), body=p.getContenuto().lower(), url=p.getURL())
+
+***********************************************************************************************************************/
+
+NDCG EVALUATION con BM25: 0.46030630140847906
+NDCG EVALUATION con TF_IDF: 0.43761624287626766
+
+MAP EVALUATION con BM25 0.3399062049062049
+MAP EVALUATION con TF_IDF 0.29367003367003364
+------------------------------------------------------------------------------------------------------------------------

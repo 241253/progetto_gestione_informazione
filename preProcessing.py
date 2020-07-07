@@ -1,6 +1,7 @@
 import string
 import nltk
 from nltk.corpus import stopwords, wordnet
+from nltk.corpus import wordnet as wn
 
 def preProcess(contenuto, isString=True):
     tokens = tokenize(contenuto)
@@ -30,6 +31,31 @@ def removePunctuation(tokens):
 
 def removeStopWords(tokens):
     return [x for x in tokens if x not in stopwords.words('english')]
+
+def disambiguateTerms(query, termine):
+    selSense = None
+    selScore = 0.0
+    for sinonimo in wn.synsets(termine, wn.NOUN):
+        score_i = 0.0
+        for token in query: # token term in t_i's context window
+            if (termine==token):
+                continue
+            bestScore = 0.0
+            for sinonimo_token in wn.synsets(token, wn.NOUN):
+                tempScore = sinonimo.wup_similarity(sinonimo_token)
+                if (tempScore>bestScore):
+                    bestScore=tempScore
+            score_i = score_i + bestScore
+        if (score_i>selScore):
+            selScore = score_i
+            selSense = sinonimo_token
+    if (selSense is not None):
+        print(termine,": ",selSense,", ",selSense.definition())
+        print("Score: ",selScore)
+        return selScore
+    else:
+        print(termine,": --")
+        return 0
 
 def queryExpansion(query):
     finalQuery = []
