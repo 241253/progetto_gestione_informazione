@@ -16,7 +16,7 @@ def get_ground_truth(query):
     ground_truth = []
     with open('evaluation_files/' + query, 'r') as file:
         ground_truth = file.readlines()
-    ground_truth = [preProcess(x[:-1].lower()) for x in ground_truth]
+    ground_truth = [x[:-1].lower() for x in ground_truth]
     return ground_truth
 
 def get_results(search_key, weighting):
@@ -33,8 +33,9 @@ def get_results(search_key, weighting):
         results = searcher.search(r, limit=20)
         count = 0
         for r in results:
-            if r['title'][:9] != 'Category:':
-                l.append(r['title'])
+            page = r['url'][30:]
+            if page[:9] != 'Category:':
+                l.append(page.lower())
                 count += 1
             if count == 10:
                 break
@@ -47,19 +48,18 @@ def ndcg_evaluation(weighting):
     idcg = true_relevance[0]
     for i in range(1, len(true_relevance)):
         idcg += true_relevance[i] / log(i+1, 2)
+    # print(idcg)
     media = 0
     for q in queries:
         ground_truth = get_ground_truth(q)
         risultati = get_results(q, weighting)
         scores = []
-        point = 6
         if len(risultati) != 0:
             for r in risultati:
                 if r in ground_truth:
                     scores.append(true_relevance[ground_truth.index(r)])
                 else:
                     scores.append(0)
-                point -= 1
             res = scores[0]
             for i in range(1, len(scores)):
                 res += scores[i]/log(i+1, 2)
@@ -67,7 +67,8 @@ def ndcg_evaluation(weighting):
         else:
             res = 0.0
         media += res
-        # print(q, ": ", res, scores)
+        # if q == 'Computer Programming':
+        #     print(q, ": ", res, scores)
         x.append(res)
     return (media/30), x
 
