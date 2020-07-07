@@ -29,7 +29,7 @@ preprocessing --> removeStopwords
 
 ***********************************************************************************************************************/
 
-NDCG EVALUATION con BM25: 0.5631026002140246
+NDCG EVALUATION con BM25: 0.5612062861533206
 NDCG EVALUATION con TF_IDF: 0.5034526810226081
 
 MAP EVALUATION con BM25 0.4017520442520442
