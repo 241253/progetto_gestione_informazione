@@ -17,6 +17,7 @@ index = create_in("indexdir/index", schema)
 writer = index.writer()
 print('parsing dump wikipedia in corso...')
 pagine = getParsedPage()
+
 print('parsing dump wikipedia terminato\n')
 
 print('Creazione dell\'indice in corso...')

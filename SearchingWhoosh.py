@@ -22,11 +22,20 @@ def select_page():
     page_clear()
     if current_page == 0:
         page_display(0)
+        if len(displayed_results) > 10:
+            current_page += 1
     elif current_page == 1:
         page_display(10)
+        if len(displayed_results) > 20:
+            current_page += 1
+        else:
+            current_page = 0
     else:
         page_display(20)
-    current_page = (current_page+1)%3
+        current_page += 1
+    current_page = current_page%3
+
+
 
 def page_display(start):
     position = 4
@@ -68,7 +77,7 @@ def search_clicked():
     if len(displayed_results) != 0:
         page_clear(True)
     q = MultifieldParser(['title', 'body'], schema=ix.schema)
-    search_keyword = txt.get()
+    search_keyword = txt.get().lower()
     search_keyword = preProcess(search_keyword)
     r = q.parse(search_keyword)
     with ix.searcher(weighting=wBM25) as searcher:
