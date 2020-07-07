@@ -22,7 +22,7 @@ print('parsing dump wikipedia terminato\n')
 
 print('Creazione dell\'indice in corso...')
 for p in pagine:
-    writer.add_document(id=p.getId(), title=p.getTitolo().lower(), body=p.getContenuto().lower(), url=p.getURL())
+    writer.add_document(id=p.getId(), title=preProcess(p.getTitolo().lower()), body=preProcess(p.getContenuto().lower()), url=p.getURL())
 
 writer.commit()
 print('Fine creazione dell\'indice\n')
