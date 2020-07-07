@@ -24,7 +24,7 @@ def get_results(search_key, weighting):
     q = MultifieldParser(['title', 'body'], schema=ix.schema)
 
     search_key = search_key.lower()
-    search_key = preProcess(search_key)
+    # search_key = preProcess(search_key)
     # search_key = queryExpansion(search_key)
     # print(search_key)
     r = q.parse(search_key)

@@ -9,11 +9,11 @@ con campo paragraphTitle
 
 ***********************************************************************************************************************/
 
-NDCG EVALUATION con BM25: 0.41152777669722124
-NDCG EVALUATION con TF_IDF: 0.49913524917153784
+NDCG EVALUATION con BM25: 0.40101338329739916
+NDCG EVALUATION con TF_IDF: 0.4990674807607493
 
-MAP EVALUATION con BM25 0.3010606060606061
-MAP EVALUATION con TF_IDF 0.34224867724867725
+MAP EVALUATION con BM25 0.2873881673881674
+MAP EVALUATION con TF_IDF 0.3421729196729197
 ------------------------------------------------------------------------------------------------------------------------
 
 con campo infobox
@@ -27,10 +27,10 @@ con campo infobox
 
 ***********************************************************************************************************************/
 
-NDCG EVALUATION con BM25: 0.43880193809242146
+NDCG EVALUATION con BM25: 0.44435452048798246
 NDCG EVALUATION con TF_IDF: 0.4914720087051154
 
-MAP EVALUATION con BM25 0.30526214526214535
+MAP EVALUATION con BM25 0.31273689273689276
 MAP EVALUATION con TF_IDF 0.3371368446368446
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -40,16 +40,16 @@ con campo category (migliora di 1% TF_IDF)
     wBM25 = scoring.BM25F(B=0.75, K1=1.5)
     wtf = TF_IDF()
     q = MultifieldParser(['title', 'body', 'category'], schema=ix.schema)
-    schema = Schema(id=NUMERIC, title=TEXT(stored=True), body=TEXT(stored=True), category=TEXT(stored=True))
+    schema = Schema(id=NUMERIC, title=TEXT(stored=True), body=TEXT(stored=True), category=TEXT(stored=True), url=TEXT(stored=True)
     writer.add_document(id=p.getId(), title=p.getTitolo().lower(), body=p.getContenuto().lower(),
-        category=p.getCategoria().lower())
+        category=p.getCategoria().lower(), url=TEXT(stored=True)
 
 ***********************************************************************************************************************/
 
-NDCG EVALUATION con BM25: 0.4150130342227627
+NDCG EVALUATION con BM25: 0.4193521143191993
 NDCG EVALUATION con TF_IDF: 0.5110934261706638
 
-MAP EVALUATION con BM25 0.3325721500721501
+MAP EVALUATION con BM25 0.3378920153920154
 MAP EVALUATION con TF_IDF 0.35291005291005295
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -60,15 +60,16 @@ con campi category, infobox e paragraphTitle
     wtf = TF_IDF()
     q = MultifieldParser(['title', 'body', 'paragraphTitle', 'infobox', 'category'], schema=ix.schema)
     schema = Schema(id=NUMERIC, title=TEXT(stored=True), body=TEXT(stored=True), category=TEXT(stored=True),
-        infobox=TEXT(stored=True), paragraphTitle=TEXT(stored=True))
+        infobox=TEXT(stored=True), paragraphTitle=TEXT(stored=True), url=TEXT(stored=True))
     writer.add_document(id=p.getId(), title=p.getTitolo().lower(), body=p.getContenuto().lower(),
         category=p.getCategoria().lower(), infobox=p.getInfobox().lower(),
-        paragraphTitle=p.getTitoliParagrafi().lower())
+        paragraphTitle=p.getTitoliParagrafi().lower(), url=p.getURL())
 
 ***********************************************************************************************************************/
 
-NDCG EVALUATION con BM25: 0.42171483179772734
+NDCG EVALUATION con BM25: 0.4223249036110243
 NDCG EVALUATION con TF_IDF: 0.48880265499866205
 
-MAP EVALUATION con BM25 0.3053499278499278
+MAP EVALUATION con BM25 0.30737373737373735
 MAP EVALUATION con TF_IDF 0.3292075517075517
+------------------------------------------------------------------------------------------------------------------------
