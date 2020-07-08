@@ -25,7 +25,7 @@ def get_results(search_key, weighting):
 
     search_key = search_key.lower()
     search_key = preProcess(search_key)
-    search_key = queryExpansion(search_key)
+    # search_key = queryExpansion(search_key)
     # print(search_key)
     r = q.parse(search_key)
     l = []
@@ -107,7 +107,7 @@ def map_evaluation(weighting):
 
 if __name__ == '__main__':
     ix = index.open_dir("indexdir/index")
-    wBM25 = scoring.BM25F(B=0.75, title_B=1.0, body_B=0.5, K1=2)
+    wBM25 = scoring.BM25F(B=0.75, title_B=1.0, body_B=0.5, K1=1.7)
     wtf = TF_IDF()
 
     m, y = ndcg_evaluation(wBM25)
