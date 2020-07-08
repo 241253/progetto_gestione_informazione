@@ -1,4 +1,4 @@
 base
     struttura (title + body)
         peso struttura (title + body)
-            preprocessing????????????
+            peso struttura (title + body) + NLTK (punctuation, stopwords, lem)
